@@ -18,8 +18,7 @@ const sequelize = new Sequelize({
     
 const dbConnect = async () => {
     try {
-        await
-        sequelize.authenticate(); 
+        await sequelize.authenticate(); 
         console.log('Conexion a MySQL Workbench exitosa!')
     } catch(error){
         console.log('Error de conexion a MySQL Workbench', error)
