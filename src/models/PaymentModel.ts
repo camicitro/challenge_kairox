@@ -14,7 +14,6 @@ export class Payment extends Model {
   public readonly updatedAt!: Date;
 
 }
-
 Payment.init(
   {
     id: {
@@ -49,7 +48,7 @@ Payment.init(
     tableName: 'payments',
     
   }
-  
+
 );
 
 // Definición de la relación
