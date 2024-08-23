@@ -1,5 +1,5 @@
-import { Sequelize } from '@sequelize/core';
-import { MySqlDialect } from '@sequelize/mysql';
+import Sequelize from 'sequelize';
+import { MySqlDialect } from  '@sequelize/mysql';
 import dotenv from 'dotenv';
 import { NUMBER } from 'sequelize';
 
