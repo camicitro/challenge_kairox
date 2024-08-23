@@ -12,24 +12,7 @@ export class Payment extends Model {
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  static init(sequelize: Sequelize) {
-    super.init(
-      {
-        name: {
-          type: DataTypes.STRING
-        },
-        species: {
-          type: DataTypes.STRING
-        }
-      },
-      {
-        sequelize: sequelize,
-        modelName: 'PaymentModel',
-        tableName: 'payments',
-        
-      }
-    );
-  }
+
 }
 
 Payment.init(
@@ -60,6 +43,13 @@ Payment.init(
       allowNull: false,
     },*/
   },
+  {
+    sequelize: sequelize,
+    modelName: 'PaymentModel',
+    tableName: 'payments',
+    
+  }
+  
 );
 
 // Definición de la relación
