@@ -29,14 +29,6 @@ const sequelize = new Sequelize(
         port: Number(process.env.DB_PORT)
     }
 )
-    
-const dbConnect = async () => {
-    try {
-        await sequelize.authenticate(); 
-        console.log('Conexion a MySQL Workbench exitosa!')
-    } catch(error){
-        console.log('Error de conexion a MySQL Workbench', error)
-    }
-}
 
-export { dbConnect, sequelize }
+
+export { sequelize }
