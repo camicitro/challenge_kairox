@@ -1,26 +1,37 @@
 import { Model, DataType, DataTypes } from "sequelize";
 import { sequelize } from "../config/database/data.source";
 
-export const Affiliate = sequelize.define(
+const Affiliate = sequelize.define(
     "Affiliate",
     {
+        id:{
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
+        },
         affiliateName: { 
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         affiliateEmail: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
         },
         affiliateDni: { 
             type: DataTypes.INTEGER.UNSIGNED,
-            unique: true
+            unique: true,
+            allowNull: false
         },
         affiliateNumber: {
             type: DataTypes.INTEGER.UNSIGNED,
-            unique: true
+            unique: true,
+            allowNull: false
         },
         affiliationEndDate: {
             type: DataTypes.DATE,
-            unique: true 
+            unique: true,
+            allowNull: true 
         }
     }, {
         tableName: 'affiliates',
