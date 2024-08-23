@@ -45,5 +45,5 @@ Payment.belongsTo(Affiliate, {
   as: 'affiliate',
 });*/
 
-
+export default Payment
 
