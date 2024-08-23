@@ -14,11 +14,6 @@ app.use(express.json())
 
 dbConnect()
 
-app.listen(PORT, () => {
-    console.log('API lista por el puerto', PORT)
-})
-
-
 // Establecer conexión y sincronizar modelos
 const startServer = async () => {
   try {
