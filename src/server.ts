@@ -1,8 +1,7 @@
 import express from 'express'
 import { sequelize } from './config/database/data.source';
 import dotenv from 'dotenv';
-import './models/PaymentModel'
-
+//import './models/AffiliateModel'
 
 dotenv.config();
 
