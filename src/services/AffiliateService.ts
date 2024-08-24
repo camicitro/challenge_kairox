@@ -8,7 +8,7 @@ class AffiliateService {
         this.affiliateModel = affiliateModel;
     }
 
-    async desactivateAffiliate(affiliateDni: number): Promise<Boolean>{
+    async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
         try{
             const affiliate = await this.findAffiliateByDni(affiliateDni);
             if(!affiliate){
@@ -42,7 +42,7 @@ class AffiliateService {
             }
     }
 
-    /*async desactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
+    /*async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
         try{
             for (const affiliateDni of affiliatesDnis){
                 await this.desactivateAffiliate(affiliateDni);

@@ -9,7 +9,7 @@ class AffiliateController{
 
     }
 
-    async desactivateAffiliate(req: Request, res: Response): Promise<Response>{
+    async deactivateAffiliate(req: Request, res: Response): Promise<Response>{
         const { dni }  = req.params;
         const dniNumber = Number(dni);
         //console.log('dni recibido:', dniNumber)
@@ -17,7 +17,7 @@ class AffiliateController{
             return res.status(400).json({ message: 'Se necesita DNI para dar de baja'})
         }
         try{
-            const desactivatedAffiliate = await this.affiliateService.desactivateAffiliate(dniNumber);
+            const desactivatedAffiliate = await this.affiliateService.deactivateAffiliate(dniNumber);
             if (!desactivatedAffiliate){
                 return res.status(404).json({ message: 'Afiliado no encontrado'})
             }

@@ -8,6 +8,6 @@ const affiliateController = new AffiliateController(affiliateService);
 
 const affiliateRouter = Router();
 
-affiliateRouter.put('/affiliates/desactivate/:dni', (req, res) => affiliateController.desactivateAffiliate(req, res))
+affiliateRouter.put('/affiliates/deactivate/:dni', (req, res) => affiliateController.deactivateAffiliate(req, res))
 
 export default affiliateRouter;
