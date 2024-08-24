@@ -1,32 +1,41 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { sequelize } from '../config/database/data.source';
-import { PaidStatus } from '../types/PaymentStateEnum';
+import { PaymentStatus } from '../types/PaymentStateEnum';
 
 
 export const Payment = sequelize.define(
     'Payment', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      date: {
+      paymentDate: {
         type: DataTypes.DATE,
+        unique: true,
         allowNull: false,
       },
       totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      paidStatus: {
-        type: DataTypes.ENUM(...Object.values(PaidStatus)),
+      paymentStatus: {
+        type: DataTypes.ENUM(...Object.values(PaymentStatus)),
         allowNull: false,
       },
-      /*idAfiliado: {
+      referenceMonth: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      referenceYear: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      /*idAfilliate: {
         type: DataTypes.INTEGER,
         references: {
-          model: Afiliado,
-          key: 'idAfiliado',
+          model: Affiliate,
+          key: 'idAffiliate',
         },
         allowNull: false,
       },*/

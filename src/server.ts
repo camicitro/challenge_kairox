@@ -2,13 +2,16 @@ import express from 'express'
 import { sequelize } from './config/database/data.source';
 import dotenv from 'dotenv';
 //import './models/AffiliateModel'
+import './models/PaymentModel';
+import PaymentRoutes from './routes/PaymentRoutes';
+
 
 dotenv.config();
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
-
+app.use('/api', PaymentRoutes);
 app.use(express.json())
 
 const startServer = async () => {
