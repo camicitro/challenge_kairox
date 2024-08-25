@@ -7,7 +7,6 @@ dotenv.config();
 
 export class EmailNotificationService {
     
-
     constructor(){
     }
 
