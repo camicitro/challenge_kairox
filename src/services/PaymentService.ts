@@ -9,9 +9,9 @@ export class PaymentService {
         this.paymentModel = paymentModel;
     }
 
-    public async createPayment( paymentData: { totalAmount: number, referenceYear: number, referenceMonth: number }) {
+    public async createPayment( paymentData: {totalAmount: number, referenceYear: number, referenceMonth: number }) {
   
-      const newPayment = await Payment.create({
+      const newPayment = await this.paymentModel.create({
         totalAmount: paymentData.totalAmount,
         paymentStatus: 'unpaid', 
         referenceMonth: paymentData.referenceMonth,
