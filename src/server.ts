@@ -1,7 +1,7 @@
 import express from 'express'
 import { sequelize } from './config/database/data.source';
 import dotenv from 'dotenv';
-//import './models/AffiliateModel'
+import { EmailNotificationService } from './services/EmailNotificationService';
 
 dotenv.config();
 
@@ -25,6 +25,15 @@ const startServer = async () => {
     }
 }
 
+
+//probando (BORRARRRRR)
+const emailNotificationService = new EmailNotificationService();
+emailNotificationService.sendEmail([ "camiverde110603@gmail.com"]);
+//
+
+
 startServer()
+
+
 
 export {app}
