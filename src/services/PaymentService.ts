@@ -9,11 +9,13 @@ export class PaymentService {
         this.paymentModel = paymentModel;
     }
 
-    public async createPayment(paymentData: { amount: number }) {
-    try {
+    public async createPayment( paymentData: { totalAmount: number, referenceYear: number, referenceMonth: number }) {
+  
       const newPayment = await Payment.create({
-        totalAmount: paymentData.amount,
-        paidStatus: 'unpaid', 
+        totalAmount: paymentData.totalAmount,
+        paymentStatus: 'unpaid', 
+        referenceMonth: paymentData.referenceMonth,
+        referenceYear: paymentData.referenceYear,
         //affiliateId: paymentData.affiliateId,
         paymentDate: new Date(), // Assuming you want to set the payment date to now
       });
@@ -21,5 +23,5 @@ export class PaymentService {
     } catch (error: any) {
       throw new Error('Payment creation failed: ' + error.message);
     }
-  }
-}
+} 
+
