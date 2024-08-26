@@ -10,11 +10,11 @@ export const Payment = sequelize.define(
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      paymentDate: {
+      /*paymentDate: {
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
-      },
+      },*/
       totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,

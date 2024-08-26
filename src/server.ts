@@ -4,15 +4,18 @@ import dotenv from 'dotenv';
 //import './models/AffiliateModel'
 import './models/PaymentModel';
 import PaymentRoutes from './routes/PaymentRoutes';
-
+import bodyParser  from 'body-parser'
 
 dotenv.config();
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
+app.use(express.json());
+
+
 app.use('/api', PaymentRoutes);
-app.use(express.json())
+
 
 const startServer = async () => {
     try {
