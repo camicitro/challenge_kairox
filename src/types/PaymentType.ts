@@ -7,3 +7,10 @@ export type PaymentType = {
     referenceMonth: number
     affiliateId: string 
   }
+
+export type PaymentMap = {
+    dni :number, 
+    {amount: number | null, 
+    status: export enum PaymentStatus {
+    }
+}

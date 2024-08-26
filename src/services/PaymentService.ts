@@ -18,7 +18,7 @@ export class PaymentService {
             },
           });
     
-          
+
           return existingPayments.length > 0;
         } catch (error: any) {
           throw new Error('Error al verificar pagos existentes: ' + error.message);
