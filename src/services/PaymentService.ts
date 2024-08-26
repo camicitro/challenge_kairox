@@ -1,5 +1,5 @@
-// payment.service.ts
 import { Payment } from '../models/PaymentModel';
+import { PaymentType } from '../types/PaymentType';
 
 export class PaymentService {
 
@@ -9,7 +9,7 @@ export class PaymentService {
         this.paymentModel = paymentModel;
     }
 
-    public async createPayment( paymentData: {totalAmount: number, referenceYear: number, referenceMonth: number }) {
+    public async createPayment( paymentData: PaymentType) {
   
       const newPayment = await this.paymentModel.create({
         totalAmount: paymentData.totalAmount,
@@ -17,7 +17,7 @@ export class PaymentService {
         referenceMonth: paymentData.referenceMonth,
         referenceYear: paymentData.referenceYear,
         //affiliateId: paymentData.affiliateId,
-        paymentDate: new Date(), // Assuming you want to set the payment date to now
+        paymentDate: new Date(), 
       });
       return newPayment;
     } catch (error: any) {

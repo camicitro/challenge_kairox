@@ -10,11 +10,6 @@ export class PaymentController {
 
   async createPayment(req: Request, res: Response): Promise<Response> {
     try {
-      /*const paymentData = {
-        totalAmount: req.body.totalAmount,
-        referenceYear: req.body.referenceYear,
-        referenceMonth: req.body.referenceMonth
-      };*/
       const paymentData = req.body
       const payment = await this.paymentService.createPayment(paymentData);
       return res.status(201).json({ message: 'Pago creado exitosamente', payment });
