@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AffiliateController from "../controller/AffiliateController";
+import AffiliateController from "../controllers/AffiliateController";
 import AffiliateService from "../services/AffiliateService";
 import Affiliate from "../models/AffiliateModel";
 

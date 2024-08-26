@@ -17,7 +17,4 @@ export const defineAssociations = () => {
     });
 };
 
-/*Affiliate.hasMany(Payment, { foreignKey: 'affiliateId', as: 'payments' });
-Payment.belongsTo(Affiliate, { foreignKey: 'affiliateId', as: 'affiliate' });
 
-export { Affiliate, Payment };*/
