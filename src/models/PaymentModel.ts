@@ -1,65 +1,45 @@
-import { Model, DataTypes } from 'sequelize';
-import Sequelize from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import { sequelize } from '../config/database/data.source';
+import { PaymentStatus } from '../types/PaymentStateEnum';
+import Affiliate from './AffiliateModel';
 
 
-export enum EstadoPago {
-  PAGO = 'pago',
-  IMPAGO = 'impago'
-}
-
-export class Pago extends Model {
-  public idPago!: number;
-  public fechaHoraPago!: Date;
-  public montoTotal!: number;
-  public estadoPago!: EstadoPago;
-  public idAfiliado!: number;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-Pago.init(
-  {
-    idPago: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    fechaHoraPago: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    montoTotal: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    estadoPago: {
-      type: DataTypes.ENUM(...Object.values(EstadoPago)),
-      allowNull: false,
-    },
-    /*idAfiliado: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Afiliado,
-        key: 'idAfiliado',
+export const Payment = sequelize.define(
+    'Payment', {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
       },
-      allowNull: false,
-    },*/
-  },
-  {
-    sequelize,
-    tableName: 'pagos',
-  }
-);
+      totalAmount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      paymentStatus: {
+        type: DataTypes.ENUM(...Object.values(PaymentStatus)),
+        allowNull: false,
+      },
+      referenceMonth: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      referenceYear: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      affiliateId: {
+        type: DataTypes.UUID,
+        references: {
+          model: Affiliate,
+          key: 'Id',
+        },
+        allowNull: false,
+      }
+}, {
+        timestamps: false
+})
 
-// Definición de la relación
-/*Afiliado.hasMany(Pago, {
-  sourceKey: 'idAfiliado',
-  foreignKey: 'idAfiliado',
-  as: 'pagos',
-});
 
-Pago.belongsTo(Afiliado, {
-  foreignKey: 'idAfiliado',
-  as: 'afiliado',
-});*/
+
+export default Payment
+

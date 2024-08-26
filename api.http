@@ -1,0 +1,10 @@
+### aasasas
+POST http://localhost:3000/api/payments
+Content-Type: application/json
+
+{
+        "totalAmount": 123,
+        "referenceYear": 2024,
+        "referenceMonth": 2,
+        "affiliateId": "7699d78c-0bbf-4c90-88d8-7c6fc85e5c10"
+}
