@@ -42,6 +42,23 @@ class AffiliateService {
             }
     }
 
+    public async findAllAffiliatesDnis(): Promise<number[]> {
+        try {
+            const affiliatesDnisObjects = await Affiliate.findAll({
+                attributes: ['affiliateDni'],
+            });
+
+            const affiliateDnisArray = affiliatesDnisObjects.map(affiliate => affiliate.getDataValue('affiliateDni'));
+
+            console.log('lo q me da es: ', affiliateDnisArray)
+            return affiliateDnisArray;
+
+        } catch (error: any) {
+            throw new Error('Error al buscar afiliados' + error.message);
+        }
+    }
+
+
     /*async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
         try{
             for (const affiliateDni of affiliatesDnis){
@@ -53,6 +70,5 @@ class AffiliateService {
         
     }*/
 }
-
 
 export default AffiliateService;
