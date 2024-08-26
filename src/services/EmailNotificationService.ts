@@ -23,6 +23,7 @@ export class EmailNotificationService {
         } catch (error){
             throw new Error('Fallo al enviar mails')
         }
-        
     }
+
+    
 }

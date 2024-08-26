@@ -42,6 +42,10 @@ class AffiliateService {
             }
     }
 
+    async findAffiliatesWithUpaidPayments(){
+        
+    }
+
     /*async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
         try{
             for (const affiliateDni of affiliatesDnis){
