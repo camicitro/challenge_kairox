@@ -17,7 +17,6 @@ export class PaymentService {
         referenceMonth: paymentData.referenceMonth,
         referenceYear: paymentData.referenceYear,
         affiliateId: paymentData.affiliateId,
-        paymentDate: new Date(), 
       });
       return newPayment;
     } catch (error: any) {
