@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import affiliateRouter from './routes/AffiliateRoutes'
 import './models/AffiliateModel'
 import PaymentRoutes from './routes/PaymentRoutes';
+import { defineAssociations } from './Associations/AssociationPaymentAffliate';
 
 
 
@@ -24,6 +25,7 @@ const startServer = async () => {
     try {
         await sequelize.authenticate();
         console.log('Conexión a la BD exitosa')
+        defineAssociations();
         await sequelize.sync( { force: false, alter: false });
         app.listen(PORT, () => {
             console.log('API lista por el puerto', PORT)

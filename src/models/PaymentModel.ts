@@ -46,10 +46,5 @@ export const Payment = sequelize.define(
 
 
 
-/*Payment.belongsTo(Affiliate, {
-  foreignKey: 'affiliateId',
-  as: 'affiliate',
-});*/
-
 export default Payment
 

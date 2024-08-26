@@ -41,9 +41,6 @@ const Affiliate = sequelize.define(
 
 
 
-/*Affiliate.hasMany(Payment, {
-    foreignKey: 'affiliateId',
-    as: 'payments',
-  }); */  
-
 export default Affiliate
+
+
