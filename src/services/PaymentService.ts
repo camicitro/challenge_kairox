@@ -16,7 +16,7 @@ export class PaymentService {
         paymentStatus: 'unpaid', 
         referenceMonth: paymentData.referenceMonth,
         referenceYear: paymentData.referenceYear,
-        //affiliateId: paymentData.affiliateId,
+        affiliateId: paymentData.affiliateId,
         paymentDate: new Date(), 
       });
       return newPayment;

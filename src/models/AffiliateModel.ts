@@ -1,10 +1,11 @@
 import { Model, DataType, DataTypes } from "sequelize";
 import { sequelize } from "../config/database/data.source";
+import Payment from "./PaymentModel";
 
 const Affiliate = sequelize.define(
     "Affiliate",
     {
-        id:{
+        Id:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
@@ -38,5 +39,11 @@ const Affiliate = sequelize.define(
         timestamps: false
 });
 
+
+
+/*Affiliate.hasMany(Payment, {
+    foreignKey: 'affiliateId',
+    as: 'payments',
+  }); */  
 
 export default Affiliate

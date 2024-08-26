@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { sequelize } from '../config/database/data.source';
 import { PaymentStatus } from '../types/PaymentStateEnum';
+import Affiliate from './AffiliateModel';
 
 
 export const Payment = sequelize.define(
@@ -31,26 +32,22 @@ export const Payment = sequelize.define(
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      /*idAfilliate: {
-        type: DataTypes.INTEGER,
+      affiliateId: {
+        type: DataTypes.UUID,
         references: {
           model: Affiliate,
-          key: 'idAffiliate',
+          key: 'Id',
         },
         allowNull: false,
-      },*/
+      }
 }, {
         timestamps: false
 })
 
-/*Affiliate.hasMany(Payment, {
-  sourceKey: 'idAffiliate',
-  foreignKey: 'idAffiliate',
-  as: 'payments',
-});
 
-Payment.belongsTo(Affiliate, {
-  foreignKey: 'idAffiliate',
+
+/*Payment.belongsTo(Affiliate, {
+  foreignKey: 'affiliateId',
   as: 'affiliate',
 });*/
 
