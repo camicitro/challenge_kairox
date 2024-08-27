@@ -26,7 +26,5 @@ PUT http://localhost:3000/api/affiliates/deactivateSome
 Content-Type: application/json
 
 {
-        "dnis": [
-                111, 222
-        ]
+        "dnis": [111, 222]
 }

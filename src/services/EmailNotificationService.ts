@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// ************* VER SI ESTO LO PONGO COMO UNA FUNCION EXPORTADA Y NO COMO UNA CLASE
-
 export class EmailNotificationService {
     
     constructor(){

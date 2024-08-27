@@ -31,7 +31,6 @@ const Affiliate = sequelize.define(
         },
         affiliationEndDate: {
             type: DataTypes.DATE,
-            unique: true,
             allowNull: true 
         }
     }, {

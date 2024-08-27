@@ -20,7 +20,7 @@ affiliateRouter.put('/affiliates/deactivate/:dni', (req, res) => affiliateContro
 
 //para pruebas despues borrar
 affiliateRouter.get('/affiliates/unpaids', (req, res) => affiliateController.findAffiliatesWithUnpaid(req, res))
-affiliateRouter.put('/affiliates/deactivateSome', (req, res) => affiliateController.deactivateNonPayingAffiliates(req, res))
 
+affiliateRouter.put('/affiliates/deactivateSome', (req, res) => affiliateController.deactivateNonPayingAffiliates(req, res));
 
 export default affiliateRouter;

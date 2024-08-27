@@ -18,7 +18,7 @@ app.use(express.json());
 
 
 app.use('/api', PaymentRoutes);
-app.use('/api', affiliateRouter)
+app.use('/api', affiliateRouter);
 
 const startServer = async () => {
     try {

@@ -17,8 +17,8 @@ class AffiliateService {
 
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
         try{
-            console.log('EL DNI Q LLEGA ES ', affiliateDni)
             const affiliate = await this.findAffiliateByDni(affiliateDni);
+
             if(!affiliate){
                 console.error('No existe el afiliado o está dado de baja');
                 return false;
@@ -26,7 +26,7 @@ class AffiliateService {
                 const affiliationEndDate = new Date();
                 await affiliate.update(
                     { affiliationEndDate: affiliationEndDate },
-                    {where: { affiliateDni }}
+                    {where: { affiliateDni: affiliateDni }}
                 );
                 return true;
             }
@@ -82,9 +82,9 @@ class AffiliateService {
     async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
         try{
             for(const affiliateDni of affiliatesDnis){
-                console.log('el dni es', affiliateDni)
-                await this.deactivateAffiliate(affiliateDni);
+                const deactivate: boolean = await this.deactivateAffiliate(affiliateDni);
             }
+            
         }catch{
             throw new Error('Error dando de baja afiliados');
         }

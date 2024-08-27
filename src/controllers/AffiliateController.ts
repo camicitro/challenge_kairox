@@ -42,8 +42,7 @@ class AffiliateController{
     async deactivateNonPayingAffiliates(req: Request, res: Response): Promise<Response>{
         try{
             const { dnis } = req.body
-            await this.affiliateService.deactivateAffiliate(dnis);
-            console.log(' dnis desactivados: ', dnis)
+            await this.affiliateService.deactivateNonPayingAffiliates(dnis);
             return res.status(200).json({ message: 'Afiliados dados de baja exitosamente'})
 
         }catch (error) {
