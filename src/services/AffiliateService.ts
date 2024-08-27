@@ -43,18 +43,19 @@ class AffiliateService {
             }
     }
 
-    async findAffiliateIdByDni(affiliateDni: number): Promise<string>{
+    async findAffiliateIdByDni(affiliateDni: number): Promise<string> {
         try {
             const affiliate = await Affiliate.findOne({
                 where: { affiliateDni }
-            }) as Model<AffiliateAttributes>;
+            });
+    
             
             if (affiliate) {
-                return affiliate.getDataValue('id');
+                return affiliate.getDataValue('id'); 
             } else {
-                throw new Error('No existe afiliado con ese dni'); 
+                throw new Error('No existe afiliado con ese dni');
             }
-        }catch(error){
+        } catch (error) {
             throw new Error('Error buscando el id del afiliado');
         }
     }

@@ -5,9 +5,10 @@ import AffiliateService from "./AffiliateService";
 import { PaymentStatus } from "../types/PaymentStateEnum";
 
 export class ProcessPaymentService {
-    private paymentService:  PaymentService;
+    private  paymentService:  PaymentService;
     private affiliateService: AffiliateService;
-    static processFile: any;
+    
+ 
 
     constructor(paymentService:  PaymentService, affiliateService: AffiliateService){
         this.paymentService = paymentService;

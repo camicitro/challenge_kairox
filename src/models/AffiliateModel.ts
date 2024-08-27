@@ -25,7 +25,7 @@ const Affiliate = sequelize.define(
             allowNull: false
         },
         affiliateNumber: {
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },
