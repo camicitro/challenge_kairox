@@ -101,21 +101,21 @@ class AffiliateService {
                     affiliateEmails.push(affiliate.getDataValue('affiliateEmail'));
                 }
             }
-
             return affiliateEmails;
         }catch{
             throw new Error('Error buscando mails');
         }
         
     }
-    async processAffiliateDeactivation(){
+    async processAffiliateDeactivation(): Promise<void>{
         try{
-            const inactiveAffiliatesDnis = await this.findAffiliatesWithUpaidPayments(); //dnis q no pagaron
-            const inactiveAffiliatesEmails = await this.findNonPayingAffiliatesEmails(inactiveAffiliatesDnis); //mails q no pagaron
+            const inactiveAffiliatesDnis = await this.findAffiliatesWithUpaidPayments(); 
+            const inactiveAffiliatesEmails = await this.findNonPayingAffiliatesEmails(inactiveAffiliatesDnis); 
             
-            await this.emailNotificationService.sendEmail(inactiveAffiliatesEmails); //manda mail xd
+            await this.emailNotificationService.sendEmail(inactiveAffiliatesEmails); 
 
             await this.deactivateNonPayingAffiliates(inactiveAffiliatesDnis); 
+            
         }catch{
             throw new Error('Error en el proceso de baja');
         }

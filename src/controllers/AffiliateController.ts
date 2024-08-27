@@ -27,6 +27,15 @@ class AffiliateController{
         }
     }
 
+    async processAffiliatesDeactivation(req: Request, res: Response): Promise<Response>{
+        try{
+            await this.affiliateService.processAffiliateDeactivation()
+            return res.status(200).json({ message: 'Afiliados informados y dados de baja exitosamente'}) 
+        }catch (error) {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
     //despues borrar esto es para pruebassss (desde aca)
     async findAffiliatesWithUnpaid(req: Request, res: Response): Promise<Response>{
         try{
@@ -48,7 +57,20 @@ class AffiliateController{
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
-    }    //(hasta aca)
+    }    
+    
+    async findEmailsUnpaids(req: Request, res: Response): Promise<Response>{
+        try{
+            const { dnis } = req.body
+            await this.affiliateService.findNonPayingAffiliatesEmails(dnis);
+            
+            return res.status(200).json({ message: 'Mails bien'})
+
+        }catch (error) {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+    //(hasta aca)
 }
 
 export default AffiliateController

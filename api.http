@@ -6,7 +6,7 @@ Content-Type: application/json
         "totalAmount": 123,
         "referenceYear": 2024,
         "referenceMonth": 6,
-        "affiliateId": "7649d78c-0bbf-4c90-88d8-7c6fc85e4c10"
+        "affiliateId": "7199d78c-0bbf-4c90-88d8-7c6fc85e5c12"
 }
 
 ### 
@@ -28,3 +28,17 @@ Content-Type: application/json
 {
         "dnis": [111, 222]
 }
+
+
+
+###
+GET http://localhost:3000/api/affiliates/mails
+Content-Type: application/json
+
+{
+        "dnis": [111, 222, 333, 444]
+}
+
+
+###
+GET http://localhost:3000/api/affiliates/verifyUnpaidMonths
