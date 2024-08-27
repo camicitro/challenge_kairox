@@ -12,9 +12,6 @@ class ProcessPaymentController {
     }
     async processFile(req: Request, res: Response): Promise<Response> {
         try {
-            /*if (!req.file) { 
-                return res.status(400).send('No se subió ningún archivo.');
-            }*/
             const { file } = req;
             const {month, year} = req.body;
             if (!file || !month || !year) {

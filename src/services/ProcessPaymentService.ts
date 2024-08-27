@@ -18,6 +18,7 @@ export class ProcessPaymentService {
 
     //por ahora dejemos q devuelva void
     async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
+        console.log('ENTRE AL SERVICE')
         const fileStream = fs.createReadStream(filePath);
         const rl = readline.createInterface({
             input: fileStream,
@@ -27,18 +28,25 @@ export class ProcessPaymentService {
         
         const referenceMonth: number = processPaymentData.month
         const referenceYear: number = processPaymentData.year
+        
+        console.log('ESTOY POR EJECUTAR EL CHECKEXISTINGPAYMENTS, MES Y AÑO SON: ', referenceMonth, ', ', referenceYear)
+
         const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear)
+
+        console.log('YA SE FIJO SI EXISTEN PAGOS; ', existsPayments)
+
         if (existsPayments){
             throw new Error ('Error, pagos existentes para ese mes y año')
         }
         
-
+        console.log('VA A CREAR EL ARREGLO DE DNIS')
         const paidDnis: number[] = [];
         for await(const line of rl){
             const affiliateFields = line.split('|');
             const affiliateDni = Number(affiliateFields[0]);
             paidDnis.push(affiliateDni);
         }
+        console.log('ya creo el arreglo: ', paidDnis)
         const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
         const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll)
         const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
