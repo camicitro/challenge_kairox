@@ -1,11 +1,18 @@
+import { attribute } from "@sequelize/core/lib/expression-builders/attribute";
 import Affiliate from "../models/AffiliateModel";
+import { PaymentService } from "./PaymentService";
+import { EmailNotificationService } from "./EmailNotificationService";
 
 
 class AffiliateService {
     private affiliateModel: typeof Affiliate;
+    private paymentService: PaymentService;
+    private emailNotificationService: EmailNotificationService;
 
-    constructor(affiliateModel: typeof Affiliate){
+    constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService){
         this.affiliateModel = affiliateModel;
+        this.paymentService = paymentService;
+        this.emailNotificationService = emailNotificationService;
     }
 
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
@@ -42,20 +49,73 @@ class AffiliateService {
             }
     }
 
-    async findAffiliatesWithUpaidPayments(){
-        
+    async findAffiliatesWithUpaidPayments(): Promise<number[]>{
+        try{
+            const affiliates = await this.affiliateModel.findAll({
+                where: {
+                    affiliationEndDate: null //esto para q no tome los dados de baja
+                },
+                attributes: ['affiliateDni']
+            })
+            const allAffiliatesDnisArray: number[] = affiliates.map(affiliate => (affiliate.getDataValue('affiliateDni')));
+
+            const affiliatesLatePayments: number[] = []; 
+
+            for(const affiliate of allAffiliatesDnisArray){
+                const hasLatePayments = await this.paymentService.hasLatePayments(affiliate);
+                if(hasLatePayments){
+                    affiliatesLatePayments.push(affiliate);
+                }
+            }
+            return affiliatesLatePayments;
+
+        }catch(error){
+                throw new Error('Error buscando afiiados con 3 meses de pagos impagos');
+        }
     }
 
-    /*async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
+    async deactivateNonPayingAffiliates(affiliatesDnis: number[]): Promise<void>{
         try{
             for (const affiliateDni of affiliatesDnis){
-                await this.desactivateAffiliate(affiliateDni);
+                await this.deactivateAffiliate(affiliateDni);
             }
         }catch{
             throw new Error('Error dando de baja afiliados');
         }
         
-    }*/
+    }
+
+    async findNonPayingAffiliatesEmails(affiliateDnis: number[]): Promise<string[]>{
+        try{
+            const affiliateEmails: string[] = []
+
+            for(const affiliateDni of affiliateDnis){
+                const affiliate = await this.findAffiliateByDni(affiliateDni);
+                if(affiliate){
+                    affiliateEmails.push(affiliate.getDataValue('affiliateEmail'));
+                }
+            }
+
+            return affiliateEmails;
+        }catch{
+            throw new Error('Error buscando mails');
+        }
+        
+    }
+    async processAffiliateDeactivation(){
+        try{
+            const inactiveAffiliatesDnis = await this.findAffiliatesWithUpaidPayments(); //dnis q no pagaron
+            const inactiveAffiliatesEmails = await this.findNonPayingAffiliatesEmails(inactiveAffiliatesDnis); //mails q no pagaron
+            
+            await this.emailNotificationService.sendEmail(inactiveAffiliatesEmails); //manda mail xd
+
+            await this.deactivateNonPayingAffiliates(inactiveAffiliatesDnis); 
+        }catch{
+            throw new Error('Error en el proceso de baja');
+        }
+
+
+    }
 }
 
 
