@@ -26,7 +26,6 @@ export class PaymentService {
       }
 
     public async createPayment( paymentData: PaymentType) {
-  
       const newPayment = await this.paymentModel.create({
         totalAmount: paymentData.totalAmount,
         paymentStatus: paymentData.paymentStatus, 

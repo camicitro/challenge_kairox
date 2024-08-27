@@ -7,7 +7,14 @@ import Payment from '../models/PaymentModel';
 import Affiliate from '../models/AffiliateModel';
 import multer from 'multer';
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: 'uploads/', 
+        filename: (req, file, cb) => {
+            cb(null, file.originalname); 
+        }
+    })
+});
 
 const router = Router();
 

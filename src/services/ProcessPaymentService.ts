@@ -18,7 +18,6 @@ export class ProcessPaymentService {
 
     //por ahora dejemos q devuelva void
     async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
-        console.log('ENTRE AL SERVICE')
         const fileStream = fs.createReadStream(filePath);
         const rl = readline.createInterface({
             input: fileStream,
@@ -29,38 +28,37 @@ export class ProcessPaymentService {
         const referenceMonth: number = processPaymentData.month
         const referenceYear: number = processPaymentData.year
         
-        console.log('ESTOY POR EJECUTAR EL CHECKEXISTINGPAYMENTS, MES Y AÑO SON: ', referenceMonth, ', ', referenceYear)
 
         const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear)
-
-        console.log('YA SE FIJO SI EXISTEN PAGOS; ', existsPayments)
 
         if (existsPayments){
             throw new Error ('Error, pagos existentes para ese mes y año')
         }
         
-        console.log('VA A CREAR EL ARREGLO DE DNIS')
+        
         const paidDnis: number[] = [];
         for await(const line of rl){
             const affiliateFields = line.split('|');
             const affiliateDni = Number(affiliateFields[0]);
             paidDnis.push(affiliateDni);
         }
-        console.log('ya creo el arreglo: ', paidDnis)
+        
         const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
+        
         const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll)
         const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
+        
         if (create) {
             console.log('Pagos procesados correctamente. ')
         }
-        fs.unlinkSync(filePath); //borrar archivo de carpeta
+        fs.unlinkSync(filePath); 
     }
 
     async createPaymentMap(paidDnis: number[], dnisAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {
         try {
             const data = new Map<number, { amount: number | null, status: PaymentStatus }>();
-            for await(const line1 of paidDnis){
-                if (dnisAll.includes(line1)) {
+            for await(const line1 of dnisAll){
+                if (paidDnis.includes(line1)) {
                     data.set(line1, { amount: null, status: PaymentStatus.PAID}); 
                 } else {
     

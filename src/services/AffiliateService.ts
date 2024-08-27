@@ -51,7 +51,7 @@ class AffiliateService {
     
             
             if (affiliate) {
-                return affiliate.getDataValue('id'); 
+                return affiliate.getDataValue('Id'); 
             } else {
                 throw new Error('No existe afiliado con ese dni');
             }
@@ -68,7 +68,6 @@ class AffiliateService {
 
             const affiliateDnisArray = affiliatesDnisObjects.map(affiliate => affiliate.getDataValue('affiliateDni'));
 
-            console.log('lo q me da es: ', affiliateDnisArray)
             return affiliateDnisArray;
 
         } catch (error: any) {
