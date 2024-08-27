@@ -38,7 +38,18 @@ class AffiliateController{
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
-    //(hasta aca)
+
+    async deactivateNonPayingAffiliates(req: Request, res: Response): Promise<Response>{
+        try{
+            const { dnis } = req.body
+            await this.affiliateService.deactivateAffiliate(dnis);
+            console.log(' dnis desactivados: ', dnis)
+            return res.status(200).json({ message: 'Afiliados dados de baja exitosamente'})
+
+        }catch (error) {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }    //(hasta aca)
 }
 
 export default AffiliateController

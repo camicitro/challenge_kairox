@@ -17,6 +17,10 @@ const affiliateRouter = Router();
 //ver esto del :dni pq creo q no es tan seguro (sql injection)
 affiliateRouter.put('/affiliates/deactivate/:dni', (req, res) => affiliateController.deactivateAffiliate(req, res))
 
+
+//para pruebas despues borrar
 affiliateRouter.get('/affiliates/unpaids', (req, res) => affiliateController.findAffiliatesWithUnpaid(req, res))
+affiliateRouter.put('/affiliates/deactivateSome', (req, res) => affiliateController.deactivateNonPayingAffiliates(req, res))
+
 
 export default affiliateRouter;
