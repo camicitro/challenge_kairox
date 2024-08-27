@@ -12,21 +12,7 @@ export class PaymentService {
         this.paymentModel = paymentModel;
     }
 
-    public async checkExistingPayments(referenceMonth: number, referenceYear: number): Promise<boolean> {
-        try {
-          const existingPayments = await this.paymentModel.findAll({
-            where: {
-              referenceMonth: referenceMonth,
-              referenceYear: referenceYear,
-            },
-          });
     
-
-          return existingPayments.length > 0;
-        } catch (error: any) {
-          throw new Error('Error al verificar pagos existentes: ' + error.message);
-        }
-      }
 
     public async checkExistingPayments(referenceMonth: number, referenceYear: number): Promise<boolean> {
         try {

@@ -83,6 +83,7 @@ class AffiliateService {
 
     async findAffiliatesWithUpaidPayments(): Promise<number[]>{
         try{
+            
             const affiliates = await this.affiliateModel.findAll({
                 where: {
                     affiliationEndDate: null //esto para q no tome los dados de baja
@@ -97,8 +98,9 @@ class AffiliateService {
                 const affiliate = await this.findAffiliateByDni(affiliateDni);
 
                 const affiliateId = affiliate?.getDataValue('Id');
-
+                
                 const hasLatePayments = await this.paymentService.hasLatePayments(affiliateId);
+                
                 if(hasLatePayments){
                     affiliatesLatePayments.push(affiliateDni);
                 }

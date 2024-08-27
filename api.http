@@ -5,8 +5,9 @@ Content-Type: application/json
 {
         "totalAmount": 123,
         "referenceYear": 2024,
-        "referenceMonth": 6,
-        "affiliateId": "7199d78c-0bbf-4c90-88d8-7c6fc85e5c12"
+        "paymentStatus": "unpaid",
+        "referenceMonth": 4,
+        "affiliateId": "c5df2f8e-f7ec-4e8f-a545-1fecfd1b2d14"
 }
 
 ### 
