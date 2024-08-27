@@ -13,7 +13,7 @@ export const Payment = sequelize.define(
       },
       totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: true,
       },
       paymentStatus: {
         type: DataTypes.ENUM(...Object.values(PaymentStatus)),

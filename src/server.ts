@@ -5,13 +5,14 @@ import affiliateRouter from './routes/AffiliateRoutes'
 import './models/AffiliateModel'
 import PaymentRoutes from './routes/PaymentRoutes';
 import { defineAssociations } from './Associations/AssociationPaymentAffliate';
-import { EmailNotificationService } from './services/EmailNotificationService';
-
+import multer from 'multer'
+import ProcessPaymentRoutes from './routes/ProcessPaymentRoutes';
 
 
 dotenv.config();
 
 const app = express()
+const upload = multer({ dest: 'uploads/'})
 const PORT = process.env.PORT || 3000
 
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use('/api', PaymentRoutes);
 app.use('/api', affiliateRouter);
+app.use('/api', ProcessPaymentRoutes);
 
 const startServer = async () => {
     try {

@@ -1,4 +1,3 @@
-import { attribute } from "@sequelize/core/lib/expression-builders/attribute";
 import Affiliate from "../models/AffiliateModel";
 import { PaymentService } from "./PaymentService";
 import { EmailNotificationService } from "./EmailNotificationService";
@@ -50,6 +49,38 @@ class AffiliateService {
             }
     }
 
+    async findAffiliateIdByDni(affiliateDni: number): Promise<string> {
+        try {
+            const affiliate = await Affiliate.findOne({
+                where: { affiliateDni }
+            });
+    
+            
+            if (affiliate) {
+                return affiliate.getDataValue('Id'); 
+            } else {
+                throw new Error('No existe afiliado con ese dni');
+            }
+        } catch (error) {
+            throw new Error('Error buscando el id del afiliado');
+        }
+    }
+
+    public async findAllAffiliatesDnis(): Promise<number[]> {
+        try {
+            const affiliatesDnisObjects = await Affiliate.findAll({
+                attributes: ['affiliateDni'],
+            });
+
+            const affiliateDnisArray = affiliatesDnisObjects.map(affiliate => affiliate.getDataValue('affiliateDni'));
+
+            return affiliateDnisArray;
+
+        } catch (error: any) {
+            throw new Error('Error al buscar afiliados' + error.message);
+        }
+    }
+
     async findAffiliatesWithUpaidPayments(): Promise<number[]>{
         try{
             const affiliates = await this.affiliateModel.findAll({
@@ -88,7 +119,6 @@ class AffiliateService {
         }catch{
             throw new Error('Error dando de baja afiliados');
         }
-        
     }
 
     async findNonPayingAffiliatesEmails(affiliateDnis: number[]): Promise<string[]>{
@@ -123,6 +153,5 @@ class AffiliateService {
 
     }
 }
-
 
 export default AffiliateService;
