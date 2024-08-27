@@ -6,6 +6,7 @@ import './models/AffiliateModel'
 import PaymentRoutes from './routes/PaymentRoutes';
 import { defineAssociations } from './Associations/AssociationPaymentAffliate';
 import multer from 'multer'
+import ProcessPaymentRoutes from './routes/ProcessPaymentRoutes';
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use('/api', PaymentRoutes);
 app.use(express.json())
 app.use('/api', affiliateRouter)
 
+app.use('/process-payment', ProcessPaymentRoutes);
 const startServer = async () => {
     try {
         await sequelize.authenticate();

@@ -29,7 +29,7 @@ export class PaymentService {
   
       const newPayment = await this.paymentModel.create({
         totalAmount: paymentData.totalAmount,
-        paymentStatus: 'unpaid', 
+        paymentStatus: paymentData.paymentStatus, 
         referenceMonth: paymentData.referenceMonth,
         referenceYear: paymentData.referenceYear,
         affiliateId: paymentData.affiliateId,

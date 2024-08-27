@@ -1,3 +1,4 @@
+import { Model } from "sequelize";
 import Affiliate from "../models/AffiliateModel";
 
 
@@ -40,6 +41,22 @@ class AffiliateService {
             }catch(error){
                 throw new Error('Error buscando afiiado');
             }
+    }
+
+    async findAffiliateIdByDni(affiliateDni: number): Promise<string>{
+        try {
+            const affiliate = await Affiliate.findOne({
+                where: { affiliateDni }
+            }) as Model<AffiliateAttributes>;
+            
+            if (affiliate) {
+                return affiliate.getDataValue('id');
+            } else {
+                throw new Error('No existe afiliado con ese dni'); 
+            }
+        }catch(error){
+            throw new Error('Error buscando el id del afiliado');
+        }
     }
 
     public async findAllAffiliatesDnis(): Promise<number[]> {
