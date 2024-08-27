@@ -37,15 +37,18 @@ export class ProcessPaymentService {
         
         
         const paidDnis: number[] = [];
+        const amounts: number[] = [];
         for await(const line of rl){
             const affiliateFields = line.split('|');
             const affiliateDni = Number(affiliateFields[0]);
             paidDnis.push(affiliateDni);
+            const paymentAmount = Number(affiliateFields[14]);
+            amounts.push(paymentAmount);
         }
         
         const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
         
-        const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll)
+        const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll, amounts)
         const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
         
         if (create) {
@@ -54,12 +57,13 @@ export class ProcessPaymentService {
         fs.unlinkSync(filePath); 
     }
 
-    async createPaymentMap(paidDnis: number[], dnisAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {
+    async createPaymentMap(paidDnis: number[], dnisAll: number[], amountsAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {
         try {
             const data = new Map<number, { amount: number | null, status: PaymentStatus }>();
             for await(const line1 of dnisAll){
                 if (paidDnis.includes(line1)) {
-                    data.set(line1, { amount: null, status: PaymentStatus.PAID}); 
+                    const index = paidDnis.indexOf(line1);
+                    data.set(line1, { amount: amountsAll[index], status: PaymentStatus.PAID}); 
                 } else {
     
                     data.set(line1, { amount: 0, status: PaymentStatus.UNPAID});  
