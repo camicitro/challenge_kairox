@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import * as readline from 'readline'
 import AffiliateService from "./AffiliateService";
 import { PaymentStatus } from "../types/PaymentStateEnum";
+import { ProcessPaymentType } from "../types/ProcessPaymentType";
 
 export class ProcessPaymentService {
     private  paymentService:  PaymentService;
@@ -16,16 +17,16 @@ export class ProcessPaymentService {
     }
 
     //por ahora dejemos q devuelva void
-    async processFile(filePath: string, month: number, year: number): Promise<void> {
-        const fileStream = fs.createReadStream(filePath);
+    async processFile(processPaymentData: ProcessPaymentType): Promise<void> {
+        const fileStream = fs.createReadStream(processPaymentData.filePath);
         const rl = readline.createInterface({
             input: fileStream,
             crlfDelay: Infinity
         });
 
         
-        const referenceMonth: number = month
-        const referenceYear: number = year
+        const referenceMonth: number = processPaymentData.month
+        const referenceYear: number = processPaymentData.year
         const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear)
         if (existsPayments){
             throw new Error ('Error, pagos existentes para ese mes y año')
@@ -40,7 +41,7 @@ export class ProcessPaymentService {
         }
         const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
         const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll)
-        const create: boolean = await this.createPayments(dataMap, month, year)
+        const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
         if (create) {
             console.log('Pagos procesados correctamente. ')
         }
