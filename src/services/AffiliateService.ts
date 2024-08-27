@@ -58,13 +58,17 @@ class AffiliateService {
                 attributes: ['affiliateDni']
             })
             const allAffiliatesDnisArray: number[] = affiliates.map(affiliate => (affiliate.getDataValue('affiliateDni')));
-
+            
             const affiliatesLatePayments: number[] = []; 
 
-            for(const affiliate of allAffiliatesDnisArray){
-                const hasLatePayments = await this.paymentService.hasLatePayments(affiliate);
+            for(const affiliateDni of allAffiliatesDnisArray){
+                const affiliate = await this.findAffiliateByDni(affiliateDni);
+
+                const affiliateId = affiliate?.getDataValue('Id');
+
+                const hasLatePayments = await this.paymentService.hasLatePayments(affiliateId);
                 if(hasLatePayments){
-                    affiliatesLatePayments.push(affiliate);
+                    affiliatesLatePayments.push(affiliateDni);
                 }
             }
             return affiliatesLatePayments;

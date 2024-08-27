@@ -23,10 +23,22 @@ class AffiliateController{
             }
             return res.status(200).json({ message: 'Afiliado dado de baja exitosamente'})
         }catch (error) {
-            console.error('Error al dar de baja al afiliado');
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
+
+    //despues borrar esto es para pruebassss (desde aca)
+    async findAffiliatesWithUnpaid(req: Request, res: Response): Promise<Response>{
+        try{
+            const arrayOfAffiliates: number[] = await this.affiliateService.findAffiliatesWithUpaidPayments();
+            console.log('el arreglo es: ', arrayOfAffiliates);
+            
+            return res.status(200).json({ message: 'funciona'})
+        }catch (error) {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+    //(hasta aca)
 }
 
 export default AffiliateController

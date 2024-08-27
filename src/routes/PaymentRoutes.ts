@@ -9,4 +9,6 @@ const paymentController = new PaymentController(paymentService);
 
 router.post('/payments', (req, res) => paymentController.createPayment(req, res));
 
+//borrar (es para pruebas)
+router.get('/payments/consecutive', (req, res) => paymentController.hasConsecutive(req, res));
 export default router;

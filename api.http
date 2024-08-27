@@ -5,6 +5,17 @@ Content-Type: application/json
 {
         "totalAmount": 123,
         "referenceYear": 2024,
-        "referenceMonth": 2,
-        "affiliateId": "7699d78c-0bbf-4c90-88d8-7c6fc85e5c10"
+        "referenceMonth": 6,
+        "affiliateId": "7649d78c-0bbf-4c90-88d8-7c6fc85e4c10"
 }
+
+### aasasa2
+GET http://localhost:3000/api/payments/consecutive
+Content-Type: application/json
+
+{
+        "id": "7699d18c-0bbf-4c10-88d8-7c6fc85e5c10"
+}
+
+###
+GET http://localhost:3000/api/affiliates/unpaids

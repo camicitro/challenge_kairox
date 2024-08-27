@@ -18,8 +18,6 @@ app.use(express.json());
 
 
 app.use('/api', PaymentRoutes);
-
-app.use(express.json())
 app.use('/api', affiliateRouter)
 
 const startServer = async () => {
@@ -37,15 +35,6 @@ const startServer = async () => {
     }
 }
 
-
-//probando (BORRARRRRR)
-const emailNotificationService = new EmailNotificationService();
-emailNotificationService.sendEmail([ "camiverde110603@gmail.com"]);
-//
-
-
 startServer()
-
-
 
 export {app}

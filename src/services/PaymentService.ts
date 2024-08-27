@@ -1,6 +1,7 @@
 import { Payment } from '../models/PaymentModel';
 import { PaymentType } from '../types/PaymentType';
 import { PaymentStatus } from '../types/PaymentStateEnum';
+import { UUID } from 'crypto';
 
 
 export class PaymentService {
@@ -25,11 +26,11 @@ export class PaymentService {
       throw new Error('Payment creation failed: ' + error.message);
     }
 
-  async hasLatePayments(affiliateDni: number): Promise<boolean>{
+  async hasLatePayments(affiliateId: string): Promise<boolean>{
     try{
       const unpaidPayments = await this.paymentModel.findAll({
         where: {
-            affiliateId: affiliateDni,
+            affiliateId: affiliateId,
             paymentStatus: PaymentStatus.UNPAID, 
         },
         attributes: ['referenceYear', 'referenceMonth'],
