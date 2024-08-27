@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ProcessPaymentService } from '../services/ProcessPaymentService';
-
+import { ProcessPaymentType } from '../types/ProcessPaymentType';
 
 
 class ProcessPaymentController {
@@ -12,13 +12,19 @@ class ProcessPaymentController {
     }
     async processFile(req: Request, res: Response): Promise<Response> {
         try {
-            const processPaymentData = req.body;
-            if (!processPaymentData.filePath || !processPaymentData.month || !processPaymentData.year) {
+            /*if (!req.file) { 
+                return res.status(400).send('No se subió ningún archivo.');
+            }*/
+            const { file } = req;
+            const {month, year} = req.body;
+            if (!file || !month || !year) {
                 return res.status(400).json({ error: 'Faltan parámetros necesarios: filePath, month, year' });
                 
             }
 
-            const processPayment = await this.processPaymentService.processFile(processPaymentData)
+            const processPaymentData: ProcessPaymentType = { month: parseInt(month), year: parseInt(year) };
+
+            const processPayment = await this.processPaymentService.processFile(processPaymentData, file.path)
             
             return res.status(200).json({ message: 'Archivo procesado correctamente.' });
         } catch (error: any) {

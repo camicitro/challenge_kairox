@@ -19,11 +19,9 @@ app.use(express.json());
 
 
 app.use('/api', PaymentRoutes);
+app.use('/api', affiliateRouter);
+app.use('/api', ProcessPaymentRoutes);
 
-app.use(express.json())
-app.use('/api', affiliateRouter)
-
-app.use('/process-payment', ProcessPaymentRoutes);
 const startServer = async () => {
     try {
         await sequelize.authenticate();

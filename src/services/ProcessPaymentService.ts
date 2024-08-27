@@ -17,8 +17,8 @@ export class ProcessPaymentService {
     }
 
     //por ahora dejemos q devuelva void
-    async processFile(processPaymentData: ProcessPaymentType): Promise<void> {
-        const fileStream = fs.createReadStream(processPaymentData.filePath);
+    async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
+        const fileStream = fs.createReadStream(filePath);
         const rl = readline.createInterface({
             input: fileStream,
             crlfDelay: Infinity
@@ -45,6 +45,7 @@ export class ProcessPaymentService {
         if (create) {
             console.log('Pagos procesados correctamente. ')
         }
+        fs.unlinkSync(filePath); //borrar archivo de carpeta
     }
 
     async createPaymentMap(paidDnis: number[], dnisAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {
