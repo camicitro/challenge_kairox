@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import AffiliateService from "../services/AffiliateService";
+import { affiliatesInDebt } from "../types/AffiliateInDebtType";
 
 class AffiliateController{
     private affiliateService: AffiliateService;
@@ -31,6 +32,15 @@ class AffiliateController{
         try{
             await this.affiliateService.processAffiliateDeactivation()
             return res.status(200).json({ message: 'Afiliados informados y dados de baja exitosamente'}) 
+        }catch (error) {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
+    async findAffiliatesInLongTermDebt(req: Request, res: Response): Promise<Response>{
+        try{
+            const affiliatesInDebt: affiliatesInDebt[] = await this.affiliateService.getAllAffiliatesInDebt()
+            return res.status(200).json(affiliatesInDebt) 
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
