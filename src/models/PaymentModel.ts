@@ -37,9 +37,9 @@ export const Payment = sequelize.define(
       }
 }, {
         timestamps: false
-})
+});
 
 
 
-export default Payment
+export default Payment;
 

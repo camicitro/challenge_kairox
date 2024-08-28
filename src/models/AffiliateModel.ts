@@ -41,6 +41,6 @@ const Affiliate = sequelize.define(
 
 
 
-export default Affiliate
+export default Affiliate;
 
 

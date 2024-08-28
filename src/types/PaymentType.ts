@@ -6,5 +6,5 @@ export type PaymentType = {
     referenceYear: number,
     referenceMonth: number
     affiliateId: string 
-  }
+  };
 

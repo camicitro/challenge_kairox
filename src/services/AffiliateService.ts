@@ -7,13 +7,11 @@ class AffiliateService {
     private affiliateModel: typeof Affiliate;
     private paymentService: PaymentService;
     private emailNotificationService: EmailNotificationService;
-    //private paymentModel: typeof Payment; 
 
     constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService){
         this.affiliateModel = affiliateModel;
         this.paymentService = paymentService;
         this.emailNotificationService = emailNotificationService;
-        //this.paymentModel = paymentModel;
     }
 
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
@@ -45,7 +43,7 @@ class AffiliateService {
                         affiliationEndDate : null,
                     }
                 })
-                return affiliate
+                return affiliate;
             }catch(error){
                 throw new Error('Error buscando afiiado');
             }
@@ -89,7 +87,6 @@ class AffiliateService {
     async getAffiliateStatusCount (affiliateDni: number) {
         try {
             const affiliateId: string = await this.findAffiliateIdByDni(affiliateDni);
-            console.log(affiliateId)
             if (!affiliateId) {
                 throw new Error('No existe un afiliado con ese DNI o la afiliación ha terminado.');
             }
@@ -160,7 +157,7 @@ class AffiliateService {
 
     async findNonPayingAffiliatesEmails(affiliateDnis: number[]): Promise<string[]>{
         try{
-            const affiliateEmails: string[] = []
+            const affiliateEmails: string[] = [];
 
             for(const affiliateDni of affiliateDnis){
                 const affiliate = await this.findAffiliateByDni(affiliateDni);
@@ -201,7 +198,7 @@ class AffiliateService {
     async getAllAffiliatesInDebt(): Promise<affiliatesInDebt[]>{
         try{
             const affiliates = await this.getAllAffiliates();
-            const affiliatesInDebt: affiliatesInDebt[] = []
+            const affiliatesInDebt: affiliatesInDebt[] = [];
 
             for (const affiliate of affiliates){
                 const affiliateId = affiliate.getDataValue('Id');
@@ -217,7 +214,7 @@ class AffiliateService {
                     });
                 }
             }
-            return affiliatesInDebt
+            return affiliatesInDebt;
         }catch{
             throw new Error('Error buscando afiliados endeudados');
         }

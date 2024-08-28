@@ -9,19 +9,19 @@ class AffiliateController{
         this.affiliateService = affiliateService;
 
     }
-
+    
     async deactivateAffiliate(req: Request, res: Response): Promise<Response>{
-        const { dni }  = req.params;
-        const dniNumber = Number(dni);
-        if(!dni){
-            return res.status(400).json({ message: 'Se necesita DNI para dar de baja'})
-        }
         try{
+            const { dni }  = req.params;
+            const dniNumber = Number(dni);
+            if(!dni){
+                return res.status(400).json({ message: 'Se necesita DNI para dar de baja'});
+            }
             const desactivatedAffiliate = await this.affiliateService.deactivateAffiliate(dniNumber);
             if (!desactivatedAffiliate){
-                return res.status(404).json({ message: 'Afiliado no encontrado'})
+                return res.status(404).json({ message: 'Afiliado no encontrado'});
             }
-            return res.status(200).json({ message: 'Afiliado dado de baja exitosamente'})
+            return res.status(200).json({ message: 'Afiliado dado de baja exitosamente'});
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -29,8 +29,8 @@ class AffiliateController{
 
     async processAffiliatesDeactivation(req: Request, res: Response): Promise<Response>{
         try{
-            await this.affiliateService.processAffiliateDeactivation()
-            return res.status(200).json({ message: 'Afiliados informados y dados de baja exitosamente'}) 
+            await this.affiliateService.processAffiliateDeactivation();
+            return res.status(200).json({ message: 'Afiliados informados y dados de baja exitosamente'});
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -38,8 +38,8 @@ class AffiliateController{
 
     async findAffiliatesInLongTermDebt(req: Request, res: Response): Promise<Response>{
         try{
-            const affiliatesInDebt: affiliatesInDebt[] = await this.affiliateService.getAllAffiliatesInDebt()
-            return res.status(200).json(affiliatesInDebt) 
+            const affiliatesInDebt: affiliatesInDebt[] = await this.affiliateService.getAllAffiliatesInDebt();
+            return res.status(200).json(affiliatesInDebt);
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -68,7 +68,7 @@ class AffiliateController{
                     payments: formattedPayments,
                 });
             } else {
-                return res.status(404).json({ error: 'No existen pagos asociados al afiliado con el DNI: ${dni}'});
+                return res.status(404).json({ error: `No existen pagos asociados al afiliado con el DNI: ${dni}`});
             }
         } catch (error: any) {
             return res.status(500).json({ error: error.message });

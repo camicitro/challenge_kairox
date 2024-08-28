@@ -10,7 +10,7 @@ export class PaymentController {
 
   async createPayment(req: Request, res: Response): Promise<Response> {
     try {
-      const paymentData = req.body
+      const paymentData = req.body;
       const payment = await this.paymentService.createPayment(paymentData);
       return res.status(201).json({ message: 'Pago creado exitosamente', payment });
 
@@ -24,9 +24,9 @@ export class PaymentController {
   //borramos?
   async hasConsecutive(req: Request, res: Response): Promise<Response>{
     try{
-      const {id} = req.body
+      const {id} = req.body;
       const booleanD = await this.paymentService.hasLatePayments(id);
-      return res.status(200).json({message: 'funciona', booleanD})
+      return res.status(200).json({message: 'funciona', booleanD});
     }catch (error: any) {
       return res.status(500).json({ message: 'Error buscando' });
     }
@@ -34,9 +34,9 @@ export class PaymentController {
 
   async searchUnpaids(req: Request, res: Response): Promise<Response>{
     try{
-      const {id} = req.body
-      const unpaids = await this.paymentService.getAllUnpaids(id)
-      return res.status(200).json({unpaids})
+      const {id} = req.body;
+      const unpaids = await this.paymentService.getAllUnpaids(id);
+      return res.status(200).json({unpaids});
     }catch (error: any) {
       return res.status(500).json({ message: 'Error buscando' });
     }
