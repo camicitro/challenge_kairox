@@ -148,7 +148,7 @@ export class PaymentService {
           if(isSameYear && isNextMonth || isNextYearButJanuary){
             temporalConsecutive.push(nextPayment);
           } else{
-            if (temporalConsecutive.length >= 3) {
+            if (temporalConsecutive.length > 3) {
               consecutivePayments.push(...temporalConsecutive);
             }
             temporalConsecutive = [];
