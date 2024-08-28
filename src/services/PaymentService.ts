@@ -5,7 +5,7 @@ import { PaymentStatus } from '../types/PaymentStateEnum';
 
 export class PaymentService {
 
-    private paymentModel: typeof Payment 
+    private paymentModel: typeof Payment; 
 
     constructor(paymentModel: typeof Payment){
         this.paymentModel = paymentModel;
@@ -40,7 +40,7 @@ export class PaymentService {
         });
         return newPayment;
       } catch (error: any) {
-          throw new Error('Payment creation failed: ' + error.message);
+          throw new Error('La creación de pago falló: ' + error.message);
         }
   }
 
@@ -51,7 +51,7 @@ export class PaymentService {
               affiliateId: affiliateId
           }
         });
-        return payments
+        return payments;
       }catch (error: any) {
         throw new Error('Error buscando los pagos');
       }  
@@ -59,7 +59,7 @@ export class PaymentService {
 
     async hasLatePayments(affiliateId: string): Promise<boolean>{
       try{
-        const unpaidPaymentsObjectsArray = await this.getAllUnpaids(affiliateId)
+        const unpaidPaymentsObjectsArray = await this.getAllUnpaids(affiliateId);
 
         const yearMonthArray: number[] = this.transformYearMonth(unpaidPaymentsObjectsArray);
 
@@ -81,7 +81,7 @@ export class PaymentService {
         if(nextDate === currentDate + 1 || nextDate - currentDate === 89){
           consecutive++;
           if (consecutive >= 3){
-            return true
+            return true;
           }
         }else{
           consecutive = 1;
@@ -91,7 +91,7 @@ export class PaymentService {
     }
 
     transformYearMonth(unpaidPayments: { referenceYear: number, referenceMonth: number}[]): number[]{
-      const yearPlusMonthArray: number[] =[]
+      const yearPlusMonthArray: number[] =[];
       for(const payment of unpaidPayments){
         const month: string = payment.referenceMonth.toString().padStart(2, '0');
         const year: string = payment.referenceYear.toString();
@@ -151,7 +151,7 @@ export class PaymentService {
             if (temporalConsecutive.length >= 3) {
               consecutivePayments.push(...temporalConsecutive);
             }
-            temporalConsecutive = []
+            temporalConsecutive = [];
           }
         } else {
           if (temporalConsecutive.length >= 3) {

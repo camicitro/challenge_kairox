@@ -19,7 +19,7 @@ export class EmailNotificationService {
                 text: 'Afiliado dado de baja debido a que no pagó durante 3 meses consecutivos'
             });
         } catch (error){
-            throw new Error('Fallo al enviar mails')
+            throw new Error('Fallo al enviar mails');
         }
     }
 

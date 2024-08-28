@@ -74,41 +74,7 @@ class AffiliateController{
             return res.status(500).json({ error: error.message });
         }
     }
-
-    //despues ver si borramos esto pq es para pruebassss (desde aca)
-    async findAffiliatesWithUnpaid(req: Request, res: Response): Promise<Response>{
-        try{
-            const arrayOfAffiliates: number[] = await this.affiliateService.findAffiliatesWithUpaidPayments();
-            return res.status(200).json({ message: 'funciona'})
-        }catch (error) {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-    }
-
-    async deactivateNonPayingAffiliates(req: Request, res: Response): Promise<Response>{
-        try{
-            const { dnis } = req.body
-            await this.affiliateService.deactivateNonPayingAffiliates(dnis);
-            return res.status(200).json({ message: 'Afiliados dados de baja exitosamente'})
-
-        }catch (error) {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-    }    
-    
-    async findEmailsUnpaids(req: Request, res: Response): Promise<Response>{
-        try{
-            const { dnis } = req.body
-            await this.affiliateService.findNonPayingAffiliatesEmails(dnis);
-            
-            return res.status(200).json({ message: 'Mails bien'})
-
-        }catch (error) {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-    }
-    
-    
+        
 }
 
 export default AffiliateController
