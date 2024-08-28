@@ -49,7 +49,7 @@ class AffiliateController{
         try {
             const { dni } = req.params;
             if (!dni) {
-                return res.status(400).json({ error: 'DNI es requerido' });
+                return res.status(400).json({ error: 'El DNI es requerido' });
             }
             const dniNumber = Number(dni);
 
@@ -77,4 +77,4 @@ class AffiliateController{
         
 }
 
-export default AffiliateController
+export default AffiliateController;
