@@ -1,4 +1,4 @@
-### 
+###  Crear un pago manualmente
 POST http://localhost:3000/api/payments
 Content-Type: application/json
 
@@ -10,43 +10,11 @@ Content-Type: application/json
         "affiliateId": "b8fcdedd-707f-4cc3-9162-2a8946593640"
 }
 
-### 
-GET http://localhost:3000/api/payments/consecutive
-Content-Type: application/json
+### Detectar afiliados que no han pagado durante 3 meses, da de baja y notifica
+PUT http://localhost:3000/api/affiliates/deactivateAffiliates
 
-{
-        "id": "b8fcdedd-707f-4cc3-9162-2a8946593640"
-}
-
-###
-GET http://localhost:3000/api/affiliates/unpaids
-
-
-###
-PUT http://localhost:3000/api/affiliates/deactivateSome
-Content-Type: application/json
-
-{
-        "dnis": [111, 222]
-}
-
-
-
-###
-GET http://localhost:3000/api/affiliates/mails
-Content-Type: application/json
-
-{
-        "dnis": [111, 222, 333, 444]
-}
-
-
-###
-GET http://localhost:3000/api/affiliates/verifyUnpaidMonths
-
-
-###
+### Mostrar los afiliados con deuda mayor o igual a 3 meses consecutivos (y los respectivos meses de deuda)
 GET http://localhost:3000/api/affiliates/affiliatesInDebt
 
-###
+### Verificar estado de un afiliado (historial de pagos)
 GET http://localhost:3000/api/affiliates/affiliate-status/44907383

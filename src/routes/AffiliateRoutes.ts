@@ -15,7 +15,7 @@ const affiliateRouter = Router();
 
 affiliateRouter.put('/affiliates/deactivate/:dni', (req, res) => affiliateController.deactivateAffiliate(req, res));
 
-affiliateRouter.get('/affiliates/verifyUnpaidMonths', (req, res) => affiliateController.processAffiliatesDeactivation(req, res));
+affiliateRouter.put('/affiliates/deactivateAffiliates', (req, res) => affiliateController.processAffiliatesDeactivation(req, res));
 
 affiliateRouter.get('/affiliates/affiliatesInDebt', (req, res) => affiliateController.findAffiliatesInLongTermDebt(req, res));
 

@@ -154,7 +154,7 @@ export class PaymentService {
             temporalConsecutive = [];
           }
         } else {
-          if (temporalConsecutive.length >= 3) {
+          if (temporalConsecutive.length > 3) {
               consecutivePayments.push(...temporalConsecutive);
           }
         } 
