@@ -28,6 +28,6 @@ const processPaymentService = new ProcessPaymentService(paymentService, affiliat
 const processPaymentController = new ProcessPaymentController(processPaymentService);
 
 
-router.post('/process', upload.single('file'), async (req, res) => processPaymentController.processFile(req, res));
+router.post('/processFile', upload.single('file'), async (req, res) => processPaymentController.processFile(req, res));
 
 export default router;

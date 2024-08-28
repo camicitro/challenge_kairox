@@ -22,13 +22,4 @@ affiliateRouter.get('/affiliates/affiliatesInDebt', (req, res) => affiliateContr
 
 affiliateRouter.get('/affiliates/affiliate-status/:dni', (req, res) => affiliateController.getAffiliateStatusCount(req, res));
 
-//para pruebas despues borrar
-affiliateRouter.get('/affiliates/unpaids', (req, res) => affiliateController.findAffiliatesWithUnpaid(req, res))
-
-affiliateRouter.put('/affiliates/deactivateSome', (req, res) => affiliateController.deactivateNonPayingAffiliates(req, res));
-
-affiliateRouter.get('/affiliates/mails', (req, res) => affiliateController.findEmailsUnpaids(req, res))
-//hasta aca borrar
-
-
 export default affiliateRouter;
