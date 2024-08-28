@@ -55,7 +55,21 @@ class AffiliateController{
 
             const payments = await this.affiliateService.getAffiliateStatusCount(dniNumber);
 
-            return res.status(200).json(console.log('Los pagos para el afiliado con dni '+ dni +' son: '+ payments.length)); 
+            if (payments.length > 0) {
+                const formattedPayments = payments.map((payment) => ({
+                    totalAmount: payment.getDataValue('totalAmount'),
+                    referenceMonth: payment.getDataValue('referenceMonth'),
+                    referenceYear: payment.getDataValue('referenceYear'),
+                    paymentStatus: payment.getDataValue('paymentStatus'),
+                }));
+    
+                return res.status(200).json({
+                    message: 'Estado de cuenta del afiliado con DNI '+dni,
+                    payments: formattedPayments,
+                });
+            } else {
+                return res.status(404).json({ error: 'No existen pagos asociados al afiliado con el DNI: ${dni}'});
+            }
         } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }
