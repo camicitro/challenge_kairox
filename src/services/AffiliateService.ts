@@ -58,7 +58,7 @@ class AffiliateService {
                 where: { 
                     affiliateDni,
                     affiliationEndDate : null,
-                 }
+                }
             });
     
             
@@ -100,6 +100,7 @@ class AffiliateService {
                     affiliateId: affiliateId
                 }
             });
+
             if (payments.length > 0) {
                 console.log('----------ESTADO DE CUENTA DEL AFILIADO CON DNI' +affiliateDni+'----------' );
                 for (const payment of  payments) {
