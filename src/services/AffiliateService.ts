@@ -1,5 +1,4 @@
 import Affiliate from "../models/AffiliateModel";
-import Payment from "../models/PaymentModel";
 import { PaymentService } from "./PaymentService";
 import { EmailNotificationService } from "./EmailNotificationService";
 import { affiliatesInDebt } from "../types/AffiliateInDebtType";
@@ -8,13 +7,13 @@ class AffiliateService {
     private affiliateModel: typeof Affiliate;
     private paymentService: PaymentService;
     private emailNotificationService: EmailNotificationService;
-    private paymentModel: typeof Payment; 
+    //private paymentModel: typeof Payment; 
 
-    constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService, paymentModel: typeof Payment){
+    constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService){
         this.affiliateModel = affiliateModel;
         this.paymentService = paymentService;
         this.emailNotificationService = emailNotificationService;
-        this.paymentModel = paymentModel;
+        //this.paymentModel = paymentModel;
     }
 
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
@@ -95,11 +94,12 @@ class AffiliateService {
                 throw new Error('No existe un afiliado con ese DNI o la afiliación ha terminado.');
             }
     
-            const payments = await this.paymentModel.findAll({
+            /*const payments = await this.paymentModel.findAll({
                 where: {
                     affiliateId: affiliateId
                 }
-            });
+            });*/
+            const payments = await this.paymentService.getAllPaymentsByAffiliateId(affiliateId);
 
             if (payments.length > 0) {
                 console.log('----------ESTADO DE CUENTA DEL AFILIADO CON DNI' +affiliateDni+'----------' );

@@ -5,16 +5,6 @@ import { NUMBER } from 'sequelize';
 
 dotenv.config();
 
-
-
-/*const sequelize = new Sequelize({
-    dialect: MySqlDialect,
-    database: process.env.DB ,
-    user: process.env.DB_USER ,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST, //127.0.0.1
-    port: Number(process.env.DB_PORT)
-});*/
 const dbName = process.env.DB as string;
 const dbUser = process.env.DB_USER as string;
 const dbPassword = process.env.DB_PASSWORD as string;

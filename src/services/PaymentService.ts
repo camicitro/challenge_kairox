@@ -44,7 +44,20 @@ export class PaymentService {
       throw new Error('Payment creation failed: ' + error.message);
     }
 
-  async hasLatePayments(affiliateId: string): Promise<boolean>{
+    async getAllPaymentsByAffiliateId(affiliateId: string){
+      try{
+        const payments = await this.paymentModel.findAll({
+          where: {
+              affiliateId: affiliateId
+          }
+        });
+        return payments
+      }catch (error: any) {
+        throw new Error('Error buscando los pagos');
+      }  
+    }
+
+    async hasLatePayments(affiliateId: string): Promise<boolean>{
     try{
       /*const unpaidPayments = await this.paymentModel.findAll({
         where: {

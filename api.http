@@ -47,3 +47,6 @@ GET http://localhost:3000/api/affiliates/verifyUnpaidMonths
 
 ###
 GET http://localhost:3000/api/affiliates/affiliatesInDebt
+
+###
+GET http://localhost:3000/api/affiliates/affiliate-status/44907383

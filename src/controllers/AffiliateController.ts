@@ -46,6 +46,22 @@ class AffiliateController{
         }
     }
 
+    async getAffiliateStatusCount(req: Request, res: Response): Promise<Response> {
+        try {
+            const { dni } = req.params;
+            if (!dni) {
+                return res.status(400).json({ error: 'DNI es requerido' });
+            }
+            const dniNumber = Number(dni);
+
+            const payments = await this.affiliateService.getAffiliateStatusCount(dniNumber);
+
+            return res.status(200).json(console.log('Los pagos para el afiliado con dni '+ dni +' son: '+ payments.length)); 
+        } catch (error: any) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
     //despues borrar esto es para pruebassss (desde aca)
     async findAffiliatesWithUnpaid(req: Request, res: Response): Promise<Response>{
         try{
@@ -81,22 +97,7 @@ class AffiliateController{
         }
     }
     
-    async getAffiliateStatusCount(req: Request, res: Response): Promise<Response> {
-        try {
-            const { dni } = req.params;
-            const dniNumber = Number(dni);
-
-            if (!dni) {
-                return res.status(400).json({ error: 'DNI es requerido' });
-            }
-
-            const payments = await this.affiliateService.getAffiliateStatusCount(dniNumber);
-
-            return res.status(200).json(console.log('Los pagos para el afiliado con dni '+ dni +' son: '+ payments.length)); 
-        } catch (error: any) {
-            return res.status(500).json({ error: error.message });
-        }
-    }
+    
 }
 
 export default AffiliateController
