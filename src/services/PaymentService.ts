@@ -78,12 +78,12 @@ export class PaymentService {
       for(let i = 0; i < yearPlusMonth.length - 1; i++){
         const currentDate: number = yearPlusMonth[i];
         const nextDate: number = yearPlusMonth[i + 1];
-        if(nextDate === currentDate + 1){
+        if(nextDate === currentDate + 1 || nextDate - currentDate === 89){
           consecutive++;
           if (consecutive >= 3){
             return true
           }
-        } else{
+        }else{
           consecutive = 1;
         }
       }
