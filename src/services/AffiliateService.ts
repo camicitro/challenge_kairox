@@ -73,6 +73,8 @@ class AffiliateService {
         try {
             const affiliatesDnisObjects = await Affiliate.findAll({
                 attributes: ['affiliateDni'],
+                where: {affiliationEndDate : null,}
+
             });
 
             const affiliateDnisArray = affiliatesDnisObjects.map(affiliate => affiliate.getDataValue('affiliateDni'));

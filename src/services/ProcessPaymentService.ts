@@ -16,13 +16,6 @@ export class ProcessPaymentService {
 
     async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
         try{
-            const fileStream = fs.createReadStream(filePath);
-            const rl = readline.createInterface({
-                input: fileStream,
-                crlfDelay: Infinity
-            });
-
-            
             const referenceMonth: number = processPaymentData.month;
             const referenceYear: number = processPaymentData.year;
             
@@ -74,6 +67,8 @@ export class ProcessPaymentService {
             throw new Error('Error al extraer dnis y montos. '+ error.message);
         }
     }
+
+
 
     async createPaymentMap(paidDnis: number[], dnisAll: number[], amountsAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {
         try {
