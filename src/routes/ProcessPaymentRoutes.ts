@@ -24,7 +24,7 @@ const paymentService = new PaymentService(Payment);
 const emailNotificationService = new EmailNotificationService();
 const affiliateService = new AffiliateService(Affiliate, paymentService, emailNotificationService);
 
-const processPaymentService = new ProcessPaymentService(paymentService, affiliateService)
+const processPaymentService = new ProcessPaymentService(paymentService, affiliateService);
 const processPaymentController = new ProcessPaymentController(processPaymentService);
 
 

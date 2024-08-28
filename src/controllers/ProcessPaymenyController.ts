@@ -21,7 +21,7 @@ class ProcessPaymentController {
 
             const processPaymentData: ProcessPaymentType = { month: parseInt(month), year: parseInt(year) };
 
-            const processPayment = await this.processPaymentService.processFile(processPaymentData, filePath)
+            const processPayment = await this.processPaymentService.processFile(processPaymentData, filePath);
             
             return res.status(200).json({ message: 'Archivo procesado correctamente.' });
         } catch (error: any) {
