@@ -71,7 +71,7 @@ class AffiliateController{
                 return res.status(404).json({ error: `No existen pagos asociados al afiliado con el DNI: ${dni}`});
             }
         } catch (error: any) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: 'Error interno del servidor. '+ error.message });
         }
     }
         

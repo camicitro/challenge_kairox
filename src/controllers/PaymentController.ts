@@ -12,10 +12,10 @@ export class PaymentController {
     try {
       const paymentData = req.body;
       const payment = await this.paymentService.createPayment(paymentData);
-      return res.status(201).json({ message: 'Pago creado exitosamente', payment });
+      return res.status(201).json({ message: 'Pago creado exitosamente. ', payment });
 
     } catch (error: any) {
-      return res.status(500).json({ message: 'Error creando el pago' });
+      return res.status(500).json({ message: 'Error interno del servidor.' });
     }
     
   };
