@@ -8,8 +8,6 @@ import { ProcessPaymentType } from "../types/ProcessPaymentType";
 export class ProcessPaymentService {
     private  paymentService:  PaymentService;
     private affiliateService: AffiliateService;
-    
- 
 
     constructor(paymentService:  PaymentService, affiliateService: AffiliateService){
         this.paymentService = paymentService;
@@ -34,7 +32,6 @@ export class ProcessPaymentService {
         if (existsPayments){
             throw new Error ('Error, pagos existentes para ese mes y año')
         }
-        
         
         const paidDnis: number[] = [];
         const amounts: number[] = [];

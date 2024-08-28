@@ -126,7 +126,7 @@ class AffiliateService {
             
             const affiliates = await this.affiliateModel.findAll({
                 where: {
-                    affiliationEndDate: null //esto para q no tome los dados de baja
+                    affiliationEndDate: null
                 },
                 attributes: ['affiliateDni']
             })
@@ -210,6 +210,7 @@ class AffiliateService {
 
             for (const affiliate of affiliates){
                 const affiliateId = affiliate.getDataValue('Id');
+                
                 const allAffiliateUnpaidMonths = await this.paymentService.getAllUnpaids(affiliateId);
                 const consecutiveAffiliateUnpaidMonths = this.paymentService.isInLongTermDebt(allAffiliateUnpaidMonths);
 

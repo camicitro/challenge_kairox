@@ -14,8 +14,6 @@ class ProcessPaymentController {
         try {
             const filePath = req.file?.path;
             const {month, year} = req.body;
-            console.log(req)
-            console.log(req.body)
             if (!filePath || !month || !year) {
                 return res.status(400).json({ error: 'Faltan parámetros necesarios: filePath, month, year' });
                 

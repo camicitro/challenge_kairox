@@ -1,8 +1,6 @@
 import { Payment } from '../models/PaymentModel';
 import { PaymentType } from '../types/PaymentType';
 import { PaymentStatus } from '../types/PaymentStateEnum';
-import { UUID } from 'crypto';
-import { ProcessPaymentType } from '../types/ProcessPaymentType';
 
 
 export class PaymentService {
@@ -32,17 +30,19 @@ export class PaymentService {
       }
 
     public async createPayment( paymentData: PaymentType) {
-      const newPayment = await this.paymentModel.create({
-        totalAmount: paymentData.totalAmount,
-        paymentStatus: paymentData.paymentStatus, 
-        referenceMonth: paymentData.referenceMonth,
-        referenceYear: paymentData.referenceYear,
-        affiliateId: paymentData.affiliateId,
-      });
-      return newPayment;
-    } catch (error: any) {
-      throw new Error('Payment creation failed: ' + error.message);
-    }
+      try{
+        const newPayment = await this.paymentModel.create({
+          totalAmount: paymentData.totalAmount,
+          paymentStatus: paymentData.paymentStatus, 
+          referenceMonth: paymentData.referenceMonth,
+          referenceYear: paymentData.referenceYear,
+          affiliateId: paymentData.affiliateId,
+        });
+        return newPayment;
+      } catch (error: any) {
+          throw new Error('Payment creation failed: ' + error.message);
+        }
+  }
 
     async getAllPaymentsByAffiliateId(affiliateId: string){
       try{
@@ -58,31 +58,17 @@ export class PaymentService {
     }
 
     async hasLatePayments(affiliateId: string): Promise<boolean>{
-    try{
-      /*const unpaidPayments = await this.paymentModel.findAll({
-        where: {
-            affiliateId: affiliateId,
-            paymentStatus: PaymentStatus.UNPAID, 
-        },
-        attributes: ['referenceYear', 'referenceMonth'],
-        group: ['referenceYear', 'referenceMonth'],
-        order: [['referenceYear', 'ASC'], ['referenceMonth', 'ASC']]
-      });
+      try{
+        const unpaidPaymentsObjectsArray = await this.getAllUnpaids(affiliateId)
 
-      const unpaidPaymentsObjectsArray = unpaidPayments.map(payment => ({
-        referenceYear: payment.getDataValue('referenceYear'),
-        referenceMonth: payment.getDataValue('referenceMonth')
-      }));*/
-      const unpaidPaymentsObjectsArray = await this.getAllUnpaids(affiliateId)
+        const yearMonthArray: number[] = this.transformYearMonth(unpaidPaymentsObjectsArray);
 
-      const yearMonthArray: number[] = this.transformYearMonth(unpaidPaymentsObjectsArray);
-
-      const hasConsecutiveUnpaids: boolean = this.hasConsecutiveUnpaids(yearMonthArray);
-      
-      return hasConsecutiveUnpaids;
-    } catch(error){
-      throw new Error('Error buscando meses consecutivos impagos');
-    }
+        const hasConsecutiveUnpaids: boolean = this.hasConsecutiveUnpaids(yearMonthArray);
+        
+        return hasConsecutiveUnpaids;
+      } catch(error){
+        throw new Error('Error buscando meses consecutivos impagos');
+      }
     
     }
 
@@ -143,6 +129,7 @@ export class PaymentService {
 
     isInLongTermDebt(unpaidPayments: {referenceYear: number, referenceMonth: number}[]): {referenceYear: number, referenceMonth: number}[]{
       if (unpaidPayments.length < 3) return [];
+      
       const consecutivePayments: { referenceYear: number, referenceMonth: number }[] = [];
       let temporalConsecutive: { referenceYear: number, referenceMonth: number }[] = [];
 
@@ -160,13 +147,13 @@ export class PaymentService {
 
           if(isSameYear && isNextMonth || isNextYearButJanuary){
             temporalConsecutive.push(nextPayment);
-          }else{
+          } else{
             if (temporalConsecutive.length >= 3) {
               consecutivePayments.push(...temporalConsecutive);
             }
             temporalConsecutive = []
           }
-        }else {
+        } else {
           if (temporalConsecutive.length >= 3) {
               consecutivePayments.push(...temporalConsecutive);
           }

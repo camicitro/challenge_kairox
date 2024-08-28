@@ -1,5 +1,3 @@
-import { CHAR } from "@sequelize/core/lib/abstract-dialect/data-types"
-import { UUID } from "crypto"
 import { PaymentStatus } from "./PaymentStateEnum"
 
 export type PaymentType = {

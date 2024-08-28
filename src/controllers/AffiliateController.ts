@@ -13,7 +13,6 @@ class AffiliateController{
     async deactivateAffiliate(req: Request, res: Response): Promise<Response>{
         const { dni }  = req.params;
         const dniNumber = Number(dni);
-        //console.log('dni recibido:', dniNumber)
         if(!dni){
             return res.status(400).json({ message: 'Se necesita DNI para dar de baja'})
         }
@@ -62,12 +61,10 @@ class AffiliateController{
         }
     }
 
-    //despues borrar esto es para pruebassss (desde aca)
+    //despues ver si borramos esto pq es para pruebassss (desde aca)
     async findAffiliatesWithUnpaid(req: Request, res: Response): Promise<Response>{
         try{
             const arrayOfAffiliates: number[] = await this.affiliateService.findAffiliatesWithUpaidPayments();
-            console.log('el arreglo es: ', arrayOfAffiliates);
-            
             return res.status(200).json({ message: 'funciona'})
         }catch (error) {
             return res.status(500).json({ message: 'Error interno del servidor' });

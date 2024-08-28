@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { PaymentService } from '../services/PaymentService';
-import { UUID } from 'sequelize';
 
 export class PaymentController {
   private paymentService: PaymentService;
@@ -22,13 +21,11 @@ export class PaymentController {
   };
 
 
-  //despues borrar
+  //borramos?
   async hasConsecutive(req: Request, res: Response): Promise<Response>{
     try{
-      console.log('ENTRE AL CONTROLADOR')
       const {id} = req.body
       const booleanD = await this.paymentService.hasLatePayments(id);
-      console.log('tiene pagos impagos? ', booleanD)
       return res.status(200).json({message: 'funciona'})
     }catch (error: any) {
       return res.status(500).json({ message: 'Error buscando' });
@@ -39,7 +36,6 @@ export class PaymentController {
     try{
       const {id} = req.body
       const unpaids = await this.paymentService.getAllUnpaids(id)
-      console.log('Los unpaids son: ', unpaids)
       return res.status(200).json({unpaids})
     }catch (error: any) {
       return res.status(500).json({ message: 'Error buscando' });
