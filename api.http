@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### Detectar afiliados que no han pagado durante 3 meses, da de baja y notifica
-GET http://localhost:3000/api/affiliates/verifyUnpaidMonths
+PUT http://localhost:3000/api/affiliates/verifyUnpaidMonths
 
 ### Mostrar los afiliados con deuda mayor o igual a 3 meses consecutivos (y los respectivos meses de deuda)
 GET http://localhost:3000/api/affiliates/affiliatesInDebt
