@@ -16,42 +16,64 @@ export class ProcessPaymentService {
 
     //por ahora dejemos q devuelva void
     async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
-        const fileStream = fs.createReadStream(filePath);
-        const rl = readline.createInterface({
-            input: fileStream,
-            crlfDelay: Infinity
-        });
+        try{
+            const fileStream = fs.createReadStream(filePath);
+            const rl = readline.createInterface({
+                input: fileStream,
+                crlfDelay: Infinity
+            });
 
-        
-        const referenceMonth: number = processPaymentData.month
-        const referenceYear: number = processPaymentData.year
-        
+            
+            const referenceMonth: number = processPaymentData.month
+            const referenceYear: number = processPaymentData.year
+            
 
-        const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear)
+            const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear)
 
-        if (existsPayments){
-            throw new Error ('Error, pagos existentes para ese mes y año')
+            if (existsPayments){
+                throw new Error ('Error, pagos existentes para ese mes y año')
+            }
+            
+
+            const { dnis: paidDnis, amounts} = await this.extractDnisAndAmountFromFile(filePath)
+            const dnis = paidDnis
+            const paymentAmounts = amounts
+            const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
+            
+            const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(dnis, dnisAll, paymentAmounts)
+            const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
+            
+            if (create) {
+                console.log('Pagos procesados correctamente. ')
+            }
+            fs.unlinkSync(filePath); 
+        } catch (error: any){
+            throw new Error('Error al procesar pago: '+ error.message);
         }
-        
-        const paidDnis: number[] = [];
-        const amounts: number[] = [];
-        for await(const line of rl){
-            const affiliateFields = line.split('|');
-            const affiliateDni = Number(affiliateFields[0]);
-            paidDnis.push(affiliateDni);
-            const paymentAmount = Number(affiliateFields[14]);
-            amounts.push(paymentAmount);
+    }
+
+    async extractDnisAndAmountFromFile (filePath: string): Promise<{ dnis: number[], amounts: number[]}> {
+        try {
+            const fileStream = fs.createReadStream(filePath);
+            const rl = readline.createInterface({
+                input: fileStream,
+                crlfDelay: Infinity
+            });
+
+            const paidDnis: number[] = [];
+            const amounts: number[] = [];
+
+            for await (const line of rl) {
+                const affiliateFields = line.split('|');
+                const affiliateDni = Number(affiliateFields[0]);
+                paidDnis.push(affiliateDni);
+                const paymentAmount = Number(affiliateFields[14]);
+                amounts.push(paymentAmount);
+            }
+            return { dnis: paidDnis, amounts: amounts };
+        } catch (error: any){
+            throw new Error('Error al extraer dnis y montos. '+ error.message);
         }
-        
-        const dnisAll: number[] = await this.affiliateService.findAllAffiliatesDnis()
-        
-        const dataMap: Map<number, { amount: number | null, status: PaymentStatus }> = await this.createPaymentMap(paidDnis, dnisAll, amounts)
-        const create: boolean = await this.createPayments(dataMap, processPaymentData.month, processPaymentData.year)
-        
-        if (create) {
-            console.log('Pagos procesados correctamente. ')
-        }
-        fs.unlinkSync(filePath); 
     }
 
     async createPaymentMap(paidDnis: number[], dnisAll: number[], amountsAll: number[]): Promise <Map<number, { amount: number | null, status: PaymentStatus }>> {

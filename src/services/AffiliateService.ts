@@ -94,11 +94,6 @@ class AffiliateService {
                 throw new Error('No existe un afiliado con ese DNI o la afiliación ha terminado.');
             }
     
-            /*const payments = await this.paymentModel.findAll({
-                where: {
-                    affiliateId: affiliateId
-                }
-            });*/
             const payments = await this.paymentService.getAllPaymentsByAffiliateId(affiliateId);
 
             if (payments.length > 0) {
