@@ -8,10 +8,8 @@ import { EmailNotificationService } from "../services/EmailNotificationService";
 
 const paymentService = new PaymentService(Payment)
 const emailNotificationService = new EmailNotificationService();
-
-const affiliateService = new AffiliateService(Affiliate, paymentService, emailNotificationService);
+const affiliateService = new AffiliateService(Affiliate, paymentService, emailNotificationService, Payment);
 const affiliateController = new AffiliateController(affiliateService);
-
 const affiliateRouter = Router();
 
 //ver esto del :dni pq creo q no es tan seguro (sql injection)
@@ -27,4 +25,5 @@ affiliateRouter.put('/affiliates/deactivateSome', (req, res) => affiliateControl
 affiliateRouter.get('/affiliates/mails', (req, res) => affiliateController.findEmailsUnpaids(req, res))
 
 
+affiliateRouter.get('/affiliate-status/:dni', (req, res) => affiliateController.getAffiliateStatusCount(req, res));
 export default affiliateRouter;

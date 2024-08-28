@@ -1,4 +1,5 @@
 import Affiliate from "../models/AffiliateModel";
+import Payment from "../models/PaymentModel";
 import { PaymentService } from "./PaymentService";
 import { EmailNotificationService } from "./EmailNotificationService";
 
@@ -7,11 +8,13 @@ class AffiliateService {
     private affiliateModel: typeof Affiliate;
     private paymentService: PaymentService;
     private emailNotificationService: EmailNotificationService;
+    private paymentModel: typeof Payment; 
 
-    constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService){
+    constructor(affiliateModel: typeof Affiliate, paymentService: PaymentService, emailNotificationService: EmailNotificationService, paymentModel: typeof Payment){
         this.affiliateModel = affiliateModel;
         this.paymentService = paymentService;
         this.emailNotificationService = emailNotificationService;
+        this.paymentModel = paymentModel;
     }
 
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
@@ -52,7 +55,10 @@ class AffiliateService {
     async findAffiliateIdByDni(affiliateDni: number): Promise<string> {
         try {
             const affiliate = await Affiliate.findOne({
-                where: { affiliateDni }
+                where: { 
+                    affiliateDni,
+                    affiliationEndDate : null,
+                 }
             });
     
             
@@ -80,6 +86,39 @@ class AffiliateService {
             throw new Error('Error al buscar afiliados' + error.message);
         }
     }
+    //BONUS TRACK ESTADO DE CUENTA
+    async getAffiliateStatusCount (affiliateDni: number) {
+        try {
+            const affiliateId: string = await this.findAffiliateIdByDni(affiliateDni);
+            console.log(affiliateId)
+            if (!affiliateId) {
+                throw new Error('No existe un afiliado con ese DNI o la afiliación ha terminado.');
+            }
+    
+            const payments = await this.paymentModel.findAll({
+                where: {
+                    affiliateId: affiliateId
+                }
+            });
+            if (payments.length > 0) {
+                console.log('----------ESTADO DE CUENTA DEL AFILIADO CON DNI' +affiliateDni+'----------' );
+                for (const payment of  payments) {
+                    console.log('Monto Total: ' + payment.getDataValue('totalAmount'));
+                    console.log('Mes de Referencia del pago: '+payment.getDataValue('referenceMonth'));
+                    console.log('Año de Referencia del pago: '+payment.getDataValue('referenceYear'));
+                    console.log('Estado del pago: '+payment.getDataValue('paymentStatus'));
+                    console.log('-----------------------------------------------------------------------');
+                }
+                return payments;
+            } else {
+                throw new Error(`No existen pagos asociados al afiliado con el DNI: ${affiliateDni}`);
+            }
+            
+        } catch (error: any) {
+            throw new Error('Error al obtener el estado de cuenta del afiliado: ' + error.message);
+        }
+    }
+    
 
     async findAffiliatesWithUpaidPayments(): Promise<number[]>{
         try{
@@ -153,5 +192,4 @@ class AffiliateService {
 
     }
 }
-
 export default AffiliateService;

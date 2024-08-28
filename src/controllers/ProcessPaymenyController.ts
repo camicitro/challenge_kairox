@@ -25,7 +25,7 @@ class ProcessPaymentController {
 
             const processPayment = await this.processPaymentService.processFile(processPaymentData, filePath)
             
-            return res.status(200).json({ message: 'Archivo procesado correctamente.' + processPayment});
+            return res.status(200).json({ message: 'Archivo procesado correctamente.' });
         } catch (error: any) {
             return res.status(500).json({ error: error.message || 'Error procesando el archivo.' });
         }

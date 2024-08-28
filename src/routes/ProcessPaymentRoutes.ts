@@ -19,7 +19,7 @@ const upload = multer({
 const router = Router();
 
 const paymentService = new PaymentService(Payment); 
-const affiliateService = new AffiliateService(Affiliate);
+const affiliateService = new AffiliateService(Affiliate, Payment);
 
 const processPaymentService = new ProcessPaymentService(paymentService, affiliateService)
 const processPaymentController = new ProcessPaymentController(processPaymentService);
