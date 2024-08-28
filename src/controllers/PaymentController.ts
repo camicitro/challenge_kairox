@@ -34,4 +34,15 @@ export class PaymentController {
       return res.status(500).json({ message: 'Error buscando' });
     }
   }
+
+  async searchUnpaids(req: Request, res: Response): Promise<Response>{
+    try{
+      const {id} = req.body
+      const unpaids = await this.paymentService.getAllUnpaids(id)
+      console.log('Los unpaids son: ', unpaids)
+      return res.status(200).json({unpaids})
+    }catch (error: any) {
+      return res.status(500).json({ message: 'Error buscando' });
+    }
+  }
 }

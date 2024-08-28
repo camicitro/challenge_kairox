@@ -4,10 +4,10 @@ Content-Type: application/json
 
 {
         "totalAmount": 123,
-        "referenceYear": 2024,
+        "referenceYear": 2023,
         "paymentStatus": "unpaid",
-        "referenceMonth": 4,
-        "affiliateId": "c5df2f8e-f7ec-4e8f-a545-1fecfd1b2d14"
+        "referenceMonth": 6,
+        "affiliateId": "eade7e58-75c6-4b0b-ac92-b01afb510f93"
 }
 
 ### 
@@ -15,7 +15,7 @@ GET http://localhost:3000/api/payments/consecutive
 Content-Type: application/json
 
 {
-        "id": "7699d18c-0bbf-4c10-88d8-7c6fc85e5c10"
+        "id": "c5df2f8e-f7ec-4e8f-a545-1fecfd1b2d14"
 }
 
 ###
@@ -43,3 +43,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/affiliates/verifyUnpaidMonths
+
+
+###
+GET http://localhost:3000/api/affiliates/affiliatesInDebt

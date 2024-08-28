@@ -19,6 +19,8 @@ affiliateRouter.put('/affiliates/deactivate/:dni', (req, res) => affiliateContro
 
 affiliateRouter.get('/affiliates/verifyUnpaidMonths', (req, res) => affiliateController.processAffiliatesDeactivation(req, res))
 
+affiliateRouter.get('/affiliates/affiliatesInDebt', (req, res) => affiliateController.findAffiliatesInLongTermDebt(req, res))
+
 //para pruebas despues borrar
 affiliateRouter.get('/affiliates/unpaids', (req, res) => affiliateController.findAffiliatesWithUnpaid(req, res))
 

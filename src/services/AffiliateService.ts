@@ -1,7 +1,7 @@
 import Affiliate from "../models/AffiliateModel";
 import { PaymentService } from "./PaymentService";
 import { EmailNotificationService } from "./EmailNotificationService";
-
+import { affiliatesInDebt } from "../types/AffiliateInDebtType";
 
 class AffiliateService {
     private affiliateModel: typeof Affiliate;
@@ -151,8 +151,41 @@ class AffiliateService {
         }catch{
             throw new Error('Error en el proceso de baja');
         }
+    }
 
+    async getAllAffiliates(): Promise<InstanceType<typeof Affiliate>[]>{
+        try{
+            const affiliates = await this.affiliateModel.findAll();
+            return affiliates;  
+        }catch{
+            throw new Error('Error buscando afiliados');
+        }
+    }
+    
 
+    async getAllAffiliatesInDebt(): Promise<affiliatesInDebt[]>{
+        try{
+            const affiliates = await this.getAllAffiliates();
+            const affiliatesInDebt: affiliatesInDebt[] = []
+
+            for (const affiliate of affiliates){
+                const affiliateId = affiliate.getDataValue('Id');
+                const allAffiliateUnpaidMonths = await this.paymentService.getAllUnpaids(affiliateId);
+                const consecutiveAffiliateUnpaidMonths = this.paymentService.isInLongTermDebt(allAffiliateUnpaidMonths);
+
+                if(consecutiveAffiliateUnpaidMonths.length > 0){
+                    affiliatesInDebt.push({
+                        affiliateName: affiliate.getDataValue('affiliateName'),
+                        affiliateDni: affiliate.getDataValue('affiliateDni'),
+                        debts: consecutiveAffiliateUnpaidMonths
+                    });
+                }
+            }
+            return affiliatesInDebt
+        }catch{
+            throw new Error('Error buscando afiliados endeudados');
+        }
+        
     }
 }
 

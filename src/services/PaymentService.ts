@@ -2,6 +2,7 @@ import { Payment } from '../models/PaymentModel';
 import { PaymentType } from '../types/PaymentType';
 import { PaymentStatus } from '../types/PaymentStateEnum';
 import { UUID } from 'crypto';
+import { ProcessPaymentType } from '../types/ProcessPaymentType';
 
 
 export class PaymentService {
@@ -45,7 +46,7 @@ export class PaymentService {
 
   async hasLatePayments(affiliateId: string): Promise<boolean>{
     try{
-      const unpaidPayments = await this.paymentModel.findAll({
+      /*const unpaidPayments = await this.paymentModel.findAll({
         where: {
             affiliateId: affiliateId,
             paymentStatus: PaymentStatus.UNPAID, 
@@ -58,7 +59,8 @@ export class PaymentService {
       const unpaidPaymentsObjectsArray = unpaidPayments.map(payment => ({
         referenceYear: payment.getDataValue('referenceYear'),
         referenceMonth: payment.getDataValue('referenceMonth')
-      }));
+      }));*/
+      const unpaidPaymentsObjectsArray = await this.getAllUnpaids(affiliateId)
 
       const yearMonthArray: number[] = this.transformYearMonth(unpaidPaymentsObjectsArray);
 
@@ -67,7 +69,6 @@ export class PaymentService {
       return hasConsecutiveUnpaids;
     } catch(error){
       throw new Error('Error buscando meses consecutivos impagos');
-
     }
     
     }
@@ -100,5 +101,67 @@ export class PaymentService {
       }
       return yearPlusMonthArray;
     }
+
+
+    async getAllUnpaids(affiliateId: string): Promise<{ referenceYear: number, referenceMonth: number}[]>{
+      try{
+        const unpaidPayments = await this.paymentModel.findAll({
+          where: {
+              affiliateId: affiliateId,
+              paymentStatus: PaymentStatus.UNPAID, 
+          },
+          attributes: ['referenceYear', 'referenceMonth'],
+          group: ['referenceYear', 'referenceMonth'],
+          order: [['referenceYear', 'ASC'], ['referenceMonth', 'ASC']]
+        });
+  
+        const unpaidPaymentsObjectsArray = unpaidPayments.map(payment => ({
+          referenceYear: payment.getDataValue('referenceYear'),
+          referenceMonth: payment.getDataValue('referenceMonth')
+        }));
+
+        return unpaidPaymentsObjectsArray
+      }catch(error){
+        throw new Error('Error buscando meses impagos');
+      }
+        
+    }
+
+
+    isInLongTermDebt(unpaidPayments: {referenceYear: number, referenceMonth: number}[]): {referenceYear: number, referenceMonth: number}[]{
+      if (unpaidPayments.length < 3) return [];
+      const consecutivePayments: { referenceYear: number, referenceMonth: number }[] = [];
+      let temporalConsecutive: { referenceYear: number, referenceMonth: number }[] = [];
+
+      for(let i = 0; i < unpaidPayments.length; i++){
+        const nextPayment = unpaidPayments[i + 1];
+        const currentPayment = unpaidPayments[i];
+
+        if(temporalConsecutive.length == 0){
+          temporalConsecutive.push(currentPayment);
+        }
+        if(nextPayment){
+          const isSameYear = currentPayment.referenceYear === nextPayment.referenceYear;
+          const isNextMonth = currentPayment.referenceMonth + 1 === nextPayment.referenceMonth;
+          const isNextYearButJanuary = currentPayment.referenceYear + 1 === nextPayment.referenceYear && currentPayment.referenceMonth === 12 && nextPayment.referenceMonth === 1;
+
+          if(isSameYear && isNextMonth || isNextYearButJanuary){
+            temporalConsecutive.push(nextPayment);
+          }else{
+            if (temporalConsecutive.length >= 3) {
+              consecutivePayments.push(...temporalConsecutive);
+            }
+            temporalConsecutive = []
+          }
+        }else {
+          if (temporalConsecutive.length >= 3) {
+              consecutivePayments.push(...temporalConsecutive);
+          }
+        } 
+      }
+      return consecutivePayments;
+    }
+
+    
 } 
 
