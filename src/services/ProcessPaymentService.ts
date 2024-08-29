@@ -4,14 +4,19 @@ import * as readline from 'readline'
 import AffiliateService from "./AffiliateService";
 import { PaymentStatus } from "../types/PaymentStateEnum";
 import { ProcessPaymentType } from "../types/ProcessPaymentType";
+import crypto from 'crypto';
+import AuditFile from "../models/AuditFile";
+import { auditFileType } from "../types/AuditFileType";
 
 export class ProcessPaymentService {
     private  paymentService:  PaymentService;
     private affiliateService: AffiliateService;
+    private auditFileModel: typeof AuditFile;
 
-    constructor(paymentService:  PaymentService, affiliateService: AffiliateService){
+    constructor(paymentService:  PaymentService, affiliateService: AffiliateService, auditFileModel: typeof AuditFile){
         this.paymentService = paymentService;
         this.affiliateService = affiliateService;
+        this.auditFileModel = auditFileModel;
     }
 
     async processFile(processPaymentData: ProcessPaymentType, filePath: string): Promise<void> {
@@ -19,11 +24,20 @@ export class ProcessPaymentService {
             const referenceMonth: number = processPaymentData.month;
             const referenceYear: number = processPaymentData.year;
             
+            const fileContent = fs.readFileSync(filePath);
+
+            const referenceHash = this.creatingHash(fileContent);
+
+            const existsHash = await this.hashExists(referenceHash);
+            if(existsHash){
+                throw new Error ('El archivo subido ha sido ingresado anteriormente');
+            }
+            const newHash = this.createAuditFile({referenceMonth, referenceYear, referenceHash})
 
             const existsPayments: boolean = await this.paymentService.checkExistingPayments(referenceMonth, referenceYear);
 
             if (existsPayments){
-                throw new Error ('Error, pagos existentes para ese mes y año');
+                throw new Error ('Pagos existentes para ese mes y año');
             }
             
 
@@ -111,5 +125,28 @@ export class ProcessPaymentService {
         } 
     }
 
+    creatingHash(file: Buffer): string{
+        const hash = crypto.createHash('sha256').update(file).digest('hex');
+        return hash;
+    }
+
+    async hashExists(hash: string): Promise<boolean>{
+        const existingFile = await this.auditFileModel.findOne({ where: { 
+            referenceHash: hash 
+        } });
+        if (existingFile) {
+            return true
+        }
+        return false
+    }
+
+    async createAuditFile(auditFile: auditFileType){
+        const newAuditFile = this.auditFileModel.create({
+            referenceMonth: auditFile.referenceMonth,
+            referenceYear: auditFile.referenceYear,
+            referenceHash: auditFile.referenceHash
+        });
+        return newAuditFile;
+    }
 }  
 

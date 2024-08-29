@@ -19,6 +19,7 @@ export const AuditFile = sequelize.define(
       referenceHash: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       }
 }, {
         timestamps: false

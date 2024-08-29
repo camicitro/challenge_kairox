@@ -7,7 +7,7 @@ import Payment from '../models/PaymentModel';
 import Affiliate from '../models/AffiliateModel';
 import multer from 'multer';
 import { EmailNotificationService } from '../services/EmailNotificationService';
-
+import AuditFile from '../models/AuditFile';
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -24,7 +24,7 @@ const paymentService = new PaymentService(Payment);
 const emailNotificationService = new EmailNotificationService();
 const affiliateService = new AffiliateService(Affiliate, paymentService, emailNotificationService);
 
-const processPaymentService = new ProcessPaymentService(paymentService, affiliateService);
+const processPaymentService = new ProcessPaymentService(paymentService, affiliateService, AuditFile);
 const processPaymentController = new ProcessPaymentController(processPaymentService);
 
 
