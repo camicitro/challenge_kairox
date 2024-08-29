@@ -3,9 +3,6 @@ info:
   title: API Fuerzas del Cielo
   version: 1.0.0
   description: Documentación de la API para la gestión de afiliados y pagos
-  contact:
-    name: Agustina
-    email: agustina.linares0@gmail.com
 servers:
   - url: http://localhost:3000
 
@@ -14,6 +11,8 @@ paths:
     get:
       summary: "Obtener el estado de cuenta de un afiliado"
       description: "Devuelve el estado de cuenta de un afiliado dado su DNI"
+      tags:
+        - Estado de Cuenta
       parameters:
         - name: "dni"
           in: "path"
