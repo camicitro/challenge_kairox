@@ -17,9 +17,8 @@ class AffiliateService {
     async deactivateAffiliate(affiliateDni: number): Promise<boolean>{
         try{
             const affiliate = await this.findAffiliateByDni(affiliateDni);
-
             if(!affiliate){
-                console.error('No existe el afiliado o está dado de baja');
+                //console.error('No existe el afiliado o está dado de baja');
                 return false;
             } else {
                 const affiliationEndDate = new Date();
@@ -27,6 +26,7 @@ class AffiliateService {
                     { affiliationEndDate: affiliationEndDate },
                     {where: { affiliateDni: affiliateDni }}
                 );
+
                 return true;
             }
         }catch{
@@ -176,12 +176,14 @@ class AffiliateService {
     async processAffiliateDeactivation(): Promise<void>{
         try{
             const inactiveAffiliatesDnis = await this.findAffiliatesWithUpaidPayments(); 
+            if(inactiveAffiliatesDnis.length <= 0){
+                return
+            }
             const inactiveAffiliatesEmails = await this.findNonPayingAffiliatesEmails(inactiveAffiliatesDnis); 
             
             await this.emailNotificationService.sendEmail(inactiveAffiliatesEmails); 
 
             await this.deactivateNonPayingAffiliates(inactiveAffiliatesDnis); 
-            
         }catch{
             throw new Error('Error en el proceso de baja');
         }

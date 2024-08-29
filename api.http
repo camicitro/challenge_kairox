@@ -4,10 +4,10 @@ Content-Type: application/json
 
 {
         "totalAmount": 123,
-        "referenceYear": 2023,
+        "referenceYear": 2021,
         "paymentStatus": "unpaid",
         "referenceMonth": 6,
-        "affiliateId": "b8fcdedd-707f-4cc3-9162-2a8946593640"
+        "affiliateId": "c5df2f8e-f7ec-4e8f-a545-1fecfd1b2d14"
 }
 
 ### Detectar afiliados que no han pagado durante 3 meses, da de baja y notifica
