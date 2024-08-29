@@ -172,5 +172,106 @@ paths:
                     message:
                       type: "string"
                       description: "Mensaje de error"
+  /api/affiliates/deactivateAffiliates:
+    put:
+      summary: Dar de baja afiliados endeudados y notificarlos
+      description: Este endpoint se encarga de tomar todos los afiliados con deuda de 3 meses o más, darlos de baja y notificarles por mail
+      tags:
+      - Afiliados
+      responses: 
+        "200":
+          description: Afiliados dados de baja correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Afiliados dados de baja exitosamente"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+  /api/payments:
+    post:
+      summary: Crear un pago específico
+      description: Este endpoint crea un pago según los datos ingresados y lo guarda
+      tags:
+        - Pagos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                totalAmount:
+                  type: number
+                  format: decimal
+                referenceMonth:
+                  type: integer
+                  description: El mes de referencia para los pagos.
+                  example: 8
+                referenceYear:
+                  type: integer
+                  description: El año de referencia para los pagos.
+                  example: 2024
+                affiliateId:
+                  type: string
+                  format: uuid
+                paymentStatus: 
+                  type: string,
+                  enum: 
+                    - paid
+                    - unpaid
+      responses:
+        '201':
+          description: Pagos procesados correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalAmount:
+                    type: number
+                    format: decimal
+                  referenceMonth:
+                    type: integer
+                    description: El mes de referencia para los pagos.
+                    example: 8
+                  referenceYear:
+                    type: integer
+                    description: El año de referencia para los pagos.
+                    example: 2024
+                  affiliateId:
+                    type: string
+                    format: uuid
+                  paymentStatus: 
+                    type: string,
+                    enum: 
+                      - paid
+                      - unpaid
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al procesar pago: Detalles del error."
+  
+
+
+
+
 
 
