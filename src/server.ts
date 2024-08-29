@@ -6,6 +6,9 @@ import './models/AffiliateModel'
 import PaymentRoutes from './routes/PaymentRoutes';
 import { defineAssociations } from './Associations/AssociationPaymentAffliate';
 import ProcessPaymentRoutes from './routes/ProcessPaymentRoutes';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs'; 
+
 
 
 dotenv.config();
@@ -15,6 +18,9 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json());
 
+const swaggerDocument = YAML.load('src/swagger.yaml'); 
+console.log('Swagger Document Loaded:', swaggerDocument);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api', PaymentRoutes);
 app.use('/api', affiliateRouter);

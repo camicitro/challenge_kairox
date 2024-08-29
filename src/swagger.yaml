@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: API Fuerzas del Cielo
+  version: 1.0.0
+  description: Documentación de la API para la gestión de afiliados y pagos
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /api/affiliates/affiliate-status/{dni}:
+    get:
+      summary: "Obtener el estado de cuenta de un afiliado"
+      description: "Devuelve el estado de cuenta de un afiliado dado su DNI"
+      tags:
+        - Estado de Cuenta
+      parameters:
+        - name: "dni"
+          in: "path"
+          required: true
+          description: "DNI del afiliado"
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Estado de cuenta del afiliado"
+          content:
+            application/json:
+              schema:
+              type: "object"
+              properties:
+              message:
+                type: "string"
+                description: "Mensaje de respuesta"
+              payments:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    totalAmount:
+                      type: "number"
+                      description: "Monto total del pago"
+                    referenceMonth:
+                      type: "integer"
+                      description: "Mes de referencia del pago"
+                    referenceYear:
+                      type: "integer"
+                      description: "Año de referencia del pago"
+                    paymentStatus:
+                      type: "string"
+                      description: "Estado del pago"
+        "400":
+          description: "DNI es requerido"
+          content:
+          aplication/json:
+          schema:
+          type: "object"
+          properties:
+            error:
+              type: "string"
+              description: "Mensaje de error"
+        "500":
+          description: "Error al obtener el estado de cuenta del afiliado"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Mensaje de error"
+
+
+  /api/processFile:
+    post:
+      summary: Procesar un archivo de pagos
+      description: Este endpoint procesa un archivo de pagos y realiza las validaciones necesarias.
+      tags:
+        - Pagos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                month:
+                  type: integer
+                  description: El mes de referencia para los pagos.
+                  example: 8
+                year:
+                  type: integer
+                  description: El año de referencia para los pagos.
+                  example: 2024
+      responses:
+        '200':
+          description: Pagos procesados correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pagos procesados correctamente."
+        '400':
+          description: Error de validación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error, pagos existentes para ese mes y año."
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al procesar pago: Detalles del error."
+  
+  /api/affiliates/affiliatesInDebt:
+    get:
+        summary: "Obtener afiliados con deuda prolongada"
+        description: "Devuelve a los afiliados que no han pagado por más de 3 meses"
+        tags:
+          - Afiliados con deuda prolongada
+        responses:
+          "200":
+            description: "Afiliados con deuda prolongada"
+            content:
+              application/json:
+                schema:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      affiliateName:
+                        type: "string"
+                        description: "Nombre del afiliado"
+                      affiliateDni:
+                        type: "string"
+                        description: "DNI del afiliado"
+                      debts:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            month:
+                              type: "integer"
+                              description: "Mes de la deuda"
+                            year:
+                              type: "integer"
+                              description: "Año de la deuda"
+                            amount:
+                              type: "number"
+                              description: "Monto de la deuda"
+          "500":
+            description: "Error interno del servidor"
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                    message:
+                      type: "string"
+                      description: "Mensaje de error"
+
+
