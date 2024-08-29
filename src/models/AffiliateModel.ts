@@ -1,6 +1,5 @@
 import { Model, DataType, DataTypes } from "sequelize";
 import { sequelize } from "../config/database/data.source";
-import Payment from "./PaymentModel";
 
 
 const Affiliate = sequelize.define(

@@ -23,6 +23,7 @@
     "@sequelize/core": "^7.0.0-alpha.41",
     "@sequelize/mysql": "^7.0.0-alpha.41",
     "@types/nodemailer": "^6.4.15",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
