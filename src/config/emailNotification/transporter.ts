@@ -4,7 +4,7 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 dotenv.config();
 
-const port = Number(process.env.EMAIL_USER)
+const port = Number(process.env.EMAIL_PORT)
 
 const transporter: Transporter<SMTPTransport.SentMessageInfo> = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
